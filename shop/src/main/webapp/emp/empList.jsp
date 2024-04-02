@@ -26,42 +26,32 @@
 </head>
 <body>
 <h1>사원목록</h1>
-<%
-	while(rs.next()){
-%>		
-		<form>
-		<table border = "1">
-			<tr>
-				<td>ID: </td>
-				<td><%=rs.getString("empId") %></td>
-			</tr>
-			<tr>
-				<td>NAME: </td>
-				<td><%=rs.getString("empName") %></td>
-			</tr>
-			<tr>
-				<td>JOB: </td>
-				<td><%=rs.getString("empJob") %></td>
-			</tr>
-			<tr>
-				<td>hireDate</td>
-				<td><%=rs.getString("hireDate") %></td>
-			</tr>
-			<tr>
-				<td>active</td>
-				<td><%=rs.getString("active") %></td>
-			</tr>
-			
-		
+	<form>
+		<table border="1">
+		    <tr>
+		        <th>ID</th>
+		        <th>NAME</th>
+		        <th>JOB</th>
+		        <th>Hire Date</th>
+		        <th>Active</th>
+		    </tr>
+		    <%
+		        while(rs.next()){
+		    %>
+		    <tr>
+		        <td><%=rs.getString("empId") %></td>
+		        <td><%=rs.getString("empName") %></td>
+		        <td><%=rs.getString("empJob") %></td>
+		        <td><%=rs.getString("hireDate") %></td>
+		        <td><%=rs.getString("active") %></td>
+		    </tr>
+		    <%
+		        } 
+		    %>
 		</table>
 	</form>
-<%
-	}
-%>
-	
-
-
-<a href = "/shop/emp/empLogout.jsp">logout</a>
+	<hr>
+		<a href = "/shop/emp/empLogout.jsp">logout</a>
 
 
 </body>
