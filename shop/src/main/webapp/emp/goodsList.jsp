@@ -12,9 +12,9 @@
  	
 %>
 <%
-Class.forName("org.mariadb.jdbc.Driver");
-Connection conn = null;
-conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
+	Class.forName("org.mariadb.jdbc.Driver");
+	Connection conn = null;
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
 	int currentPage = 1;
 	if(request.getParameter("currentPage")!= null){
 		currentPage=Integer.parseInt(request.getParameter("currentPage"));
@@ -43,6 +43,7 @@ conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","
 		lastPage = lastPage+1;
 	}
 	System.out.println(currentPage +" <currentpage");
+	
 	String category = request.getParameter("category");
 	/*
 		null이면
@@ -72,6 +73,7 @@ conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","
 	//디버깅
 	System.out.println(categoryList);
 	
+	//category가 null 아닐때
 	String sql2 = "select goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_content goodsContent, goods_price goodsPrice, goods_amount goodsAmount, update_date updateDate, create_date createDate from goods where category = ? limit ?,?";
 	ResultSet rs2= null;
 	PreparedStatement stmt2 = null;	
@@ -212,29 +214,29 @@ conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","
 				if(currentPage > 1) {
 			%>
 				<li class="page-item">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=1">처음페이지</a>
+					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
 				</li>
 				<li class="page-item">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>">이전페이지</a>
+					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
 				</li>																
 			<%		
 				} else {
 			%>
 				<li class="page-item disabled">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=1">처음페이지</a>
+					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
 				</li>
 				<li class="page-item disabled">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>">이전페이지</a>
+					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
 				</li>
 			<%		
 				}				
 				if(currentPage < lastPage) {
 			%>
 				<li class="page-item">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>">다음페이지</a>
+					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
 				</li>
 				<li class="page-item">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>">마지막페이지</a>
+					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>">마지막페이지</a>
 				</li>
 			<%		
 				}
