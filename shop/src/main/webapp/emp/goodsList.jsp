@@ -74,7 +74,7 @@
 	System.out.println(categoryList);
 	
 	//category가 null 아닐때
-	String sql2 = "select goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_content goodsContent, goods_price goodsPrice, goods_amount goodsAmount, update_date updateDate, create_date createDate from goods where category = ? limit ?,?";
+	String sql2 = "select category, goods_title goodsTitle, goods_price goodsPrice from goods where category = ? limit ?,?";
 	ResultSet rs2= null;
 	PreparedStatement stmt2 = null;	
 	stmt2 = conn.prepareStatement(sql2);	
@@ -88,19 +88,13 @@
 	ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
 	while(rs2.next()){
 		HashMap<String,Object> na = new HashMap<String, Object>();
-		na.put("goodsNo", rs2.getInt("goodsNo"));
 		na.put("category", rs2.getString("category"));
-		na.put("empId", rs2.getString("empId"));
 		na.put("goodsTitle", rs2.getString("goodsTitle"));
-		na.put("goodsContent", rs2.getString("goodsContent"));
 		na.put("goodsPrice", rs2.getInt("goodsPrice"));
-		na.put("goodsAmount", rs2.getInt("goodsAmount"));
-		na.put("updateDate", rs2.getString("updateDate"));
-		na.put("createDate", rs2.getString("createDate"));
 		list.add(na);
 	}
 	
-	String sql3 = "select goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_content goodsContent, goods_price goodsPrice, goods_amount goodsAmount, update_date updateDate, create_date createDate from goods limit ?,?";
+	String sql3 = "select category, goods_title goodsTitle, goods_price goodsPrice from goods limit ?,?";
 	ResultSet rs3= null;
 	PreparedStatement stmt3 = null;	
 	stmt3 = conn.prepareStatement(sql3);
@@ -113,15 +107,9 @@
 	ArrayList<HashMap<String,Object>> list2 = new ArrayList<HashMap<String, Object>>();
 	while(rs3.next()){
 		HashMap<String,Object> na2 = new HashMap<String, Object>();
-		na2.put("goodsNo", rs3.getInt("goodsNo"));
 		na2.put("category", rs3.getString("category"));
-		na2.put("empId", rs3.getString("empId"));
 		na2.put("goodsTitle", rs3.getString("goodsTitle"));
-		na2.put("goodsContent", rs3.getString("goodsContent"));
 		na2.put("goodsPrice", rs3.getInt("goodsPrice"));
-		na2.put("goodsAmount", rs3.getInt("goodsAmount"));
-		na2.put("updateDate", rs3.getString("updateDate"));
-		na2.put("createDate", rs3.getString("createDate"));
 		list2.add(na2);
 	}
 
@@ -159,30 +147,24 @@
 	</div>
 				<table >
 					<tr>
-						<td>No.</td>
-						<td>Category</td>
-						<td>Id</td>
+						<td>image</td>
+						<td>category</td>
 						<td>Title</td>
-						<td>Content</td>
 						<td>Price</td>
-						<td>Amount</td>
-						<td>updateDate</td>
-						<td>createDate</td>
 					</tr>
 					<%
 					if(category==null){
 						for(HashMap<String,Object> na2 : list2){
 					%>	
 					<tr>
-						<td><%=(Integer)(na2.get("goodsNo"))%></td>
-						<td><%=(String)(na2.get("category"))%></td>
-						<td><%=(String)(na2.get("empId"))%></td>
+						<td>
+							<a href="/shop/emp/goodsOne.jsp">
+								<img src="/shop/emp/img/orang2.jpg" width="200px;">
+							</a>
+						</td>
+						<td><%=(String)(na2.get("category")) %>
 						<td><%=(String)(na2.get("goodsTitle"))%></td>
-						<td><%=(String)(na2.get("goodsContent"))%></td>
 						<td><%=(Integer)(na2.get("goodsPrice"))%></td>
-						<td><%=(Integer)(na2.get("goodsAmount"))%></td>
-						<td><%=(String)(na2.get("updateDate"))%></td>
-						<td><%=(String)(na2.get("createDate"))%></td>
 					</tr>
 					
 			<%
@@ -192,15 +174,14 @@
 			%>	
 					
 					<tr>
-						<td><%=(Integer)(na.get("goodsNo"))%></td>
-						<td><%=(String)(na.get("category"))%></td>
-						<td><%=(String)(na.get("empId"))%></td>
+						<td>
+							<a href="/shop/emp/goodsOne.jsp">
+								<img src="/shop/emp/img/orang2.jpg" width="200px;">
+							</a>
+						</td>
+						<td><%=(String)(na.get("category")) %>
 						<td><%=(String)(na.get("goodsTitle"))%></td>
-						<td><%=(String)(na.get("goodsContent"))%></td>
 						<td><%=(Integer)(na.get("goodsPrice"))%></td>
-						<td><%=(Integer)(na.get("goodsAmount"))%></td>
-						<td><%=(String)(na.get("updateDate"))%></td>
-						<td><%=(String)(na.get("createDate"))%></td>
 					</tr>
 				
 			<%	
