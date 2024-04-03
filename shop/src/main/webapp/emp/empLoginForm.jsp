@@ -3,11 +3,9 @@
 
 	//로그인 인증분기 : 세션 변수 이름 loginEmp
 	
-	String loginEmp = (String)(session.getAttribute("loginEmp"));
-	System.out.println(loginEmp + "<-loginEmp");
 	
 	
-	if (loginEmp != null){
+	if (session.getAttribute("loginEmp") != null){
 		response.sendRedirect("/shop/emp/empList.jsp");
 		return;
 	} 
