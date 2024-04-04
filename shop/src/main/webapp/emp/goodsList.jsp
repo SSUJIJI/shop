@@ -130,7 +130,7 @@
 	</div>
 	
 	<div>
-		<a href = "/emp/addGoods.jsp">상품등록</a>
+		<a href = "/shop/emp/addGoodsForm.jsp">상품등록</a>
 	</div>
 	<!-- 서브메뉴 카테고리별 상품리스트 -->
 	<div>
