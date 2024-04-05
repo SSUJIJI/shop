@@ -83,13 +83,78 @@
 	<!-- css -->
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<style>
+        /* 스타일 추가 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .table-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #333;
+            color: white;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #ddd !important;
+        }
+
+        .active-link {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+		.page-info-container {
+		            text-align: center;
+		            margin-top: 20px;
+		}
+		 .custom-link {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #555;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .custom-link:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 <body>
 	<!-- empMenu.jsp include : 주체가 서버 vs redirect(주제:클라이언트) -->
-	<!-- 주체가 서버이기에 include할때는 절대주소가 /shop/...시작하지 않는다 -->
+	<!-- 주체가 서버이기에 include할때는 절대주소가 /shop/..	.시작하지 않는다 -->
 	<jsp:include page = "/emp/inc/empMenu.jsp"></jsp:include>
-<h1>사원목록</h1>
-		<table class = "table table-border">
+	<hr>
+
+	  <div class="table-container">
+		<table class = "table table-hover">
 		    <tr>
 		        <th>ID</th>
 		        <th>NAME</th>
@@ -110,22 +175,27 @@
 		        	HashMap<String,Object> sm = (HashMap<String,Object>)(session.getAttribute("loginEmp"));
 		        		if((Integer)(sm.get("grade"))>0){
 		        	%>
-		        		<a href='/shop/emp/modifyEmpActive.jsp?active=<%=(String)(m.get("active")) %>&empId=<%=(String)(m.get("empId"))%>'>
+		        		 <a class="custom-link" href='/shop/emp/modifyEmpActive.jsp?active=<%=(String)(m.get("active")) %>&empId=<%=(String)(m.get("empId"))%>'>
 		        			<%=(String)(m.get("active")) %>
 		        		</a>
 		        	<%
 		        	}
 		        	%>
-		        	
-		        </td>
-		    </tr>
 		    <%
 		        } 
 		    %>
+		        	
+		        </td>
+		    </tr>
 		</table>
+		</div>
+		    <!-- 페이지 정보 표시 -->
+	    <div class="page-info-container">
+	        <%=currentPage %>/<%=lastPage %>Page
+	    </div>
 		<nav aria-label="Page navigation example">
-			<ul class="pagination justify-content-end">
-			<%
+			  <ul class="pagination justify-content-center" style="color: #f0f0f0" >
+			<%	
 				if(currentPage > 1) {
 			%>
 				<li class="page-item">
@@ -154,17 +224,26 @@
 					<a class = "page-link" href="/shop/emp/empList.jsp?currentPage=<%=lastPage%>">마지막페이지</a>
 				</li>
 			<%		
-				}
+				}else {
+			%>
+				<li class="page-item disabled">
+					<a class = "page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage+1%>">다음페이지</a>
+				</li>
+				<li class="page-item disabled">
+					<a class = "page-link" href="/shop/emp/empList.jsp?currentPage=<%=lastPage%>">마지막페이지</a>
+				</li>
+			<%		
+				}				
 			%>
 			</ul>
 		</nav>
 			
-		<div>
-			<%=currentPage %>/<%=lastPage %>Page
-		</div>
+	
 	
 	<hr>
-		<a href = "/shop/emp/empLogout.jsp">logout</a>
+		<div style="text-align: right;">
+	        <a href="/shop/emp/empLogout.jsp" class="custom-link">logout</a>
+	    </div>
 
 
 </body>

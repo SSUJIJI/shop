@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
+<%@ page import = "java.io.*" %>
+<%@ page import="java.nio.file.*" %>
 <!-- control layer -->
 <%
 
@@ -20,20 +22,20 @@
 		currentPage=Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	int rowPerPage = 10;
+	int rowPerPage = 9;
 	int startRow = ((currentPage-1)*rowPerPage);
 	
-	String sql7 = "select count(*) cnt from goods";
-	PreparedStatement stmt7 = null;
-	stmt7 = conn.prepareStatement(sql7);
-	ResultSet rs7 = null;
-	rs7 = stmt7.executeQuery();
+	String sql3 = "select count(*) cnt from goods";
+	PreparedStatement stmt3 = null;
+	stmt3 = conn.prepareStatement(sql3);
+	ResultSet rs3 = null;
+	rs3 = stmt3.executeQuery();
 	
 	int totalRow = 0;
 
 	
-	if(rs7.next()){
-		totalRow = rs7.getInt("cnt");
+	if(rs3.next()){
+		totalRow = rs3.getInt("cnt");
 	}
 	
 	System.out.println(totalRow +"<total");
@@ -44,7 +46,7 @@
 	}
 	System.out.println(currentPage +" <currentpage");
 	
-	String category = request.getParameter("category");
+	
 	/*
 		null이면
 		select * from goods 
@@ -55,7 +57,11 @@
 %>
 <!-- model layer -->
 <%
-	
+	String category = "";
+	if(request.getParameter("category")!=null){
+		category = request.getParameter("category");
+	}
+	//category별 개수
 	ResultSet rs1= null;
 	PreparedStatement stmt1 = null;	
 	
@@ -73,12 +79,37 @@
 	//디버깅
 	System.out.println(categoryList);
 	
-	//category가 null 아닐때
-	String sql2 = "select category, goods_title goodsTitle, goods_price goodsPrice from goods where category = ? limit ?,?";
+	String sql4 = "select category, COUNT(*) cnt FROM goods where category = ? GROUP BY category";
+	PreparedStatement stmt4 = null;
+	stmt4 = conn.prepareStatement(sql4);
+	stmt4.setString(1,category);
+	ResultSet rs4 = null;
+	rs4 = stmt4.executeQuery();
+	
+	int cateTotalRow = 0;
+
+	
+	if(rs4.next()){
+		cateTotalRow = rs4.getInt("cnt");
+	}
+	System.out.println(cateTotalRow +"<cateTotal");
+
+	int cateLastPage = cateTotalRow/rowPerPage;
+	
+	if(cateTotalRow % rowPerPage != 0){
+		cateLastPage = cateLastPage+1;
+	}
+	System.out.println(cateLastPage +"<cateLastPage");
+
+	
+	
+	//category에 따른 상품 보여주는 list
+
+	String sql2 = "select category, goods_title goodsTitle, filename, goods_price goodsPrice from goods where category like ? limit ?,?";
 	ResultSet rs2= null;
 	PreparedStatement stmt2 = null;	
 	stmt2 = conn.prepareStatement(sql2);	
-	stmt2.setString(1,category);
+	stmt2.setString(1,"%"+category+"%");
 	stmt2.setInt(2,startRow);
 	stmt2.setInt(3,rowPerPage);
 	rs2 = stmt2.executeQuery();
@@ -90,30 +121,13 @@
 		HashMap<String,Object> na = new HashMap<String, Object>();
 		na.put("category", rs2.getString("category"));
 		na.put("goodsTitle", rs2.getString("goodsTitle"));
+		na.put("filename", rs2.getString("filename"));
 		na.put("goodsPrice", rs2.getInt("goodsPrice"));
 		list.add(na);
 	}
-	
-	String sql3 = "select category, goods_title goodsTitle, goods_price goodsPrice from goods limit ?,?";
-	ResultSet rs3= null;
-	PreparedStatement stmt3 = null;	
-	stmt3 = conn.prepareStatement(sql3);
-	stmt3.setInt(1,startRow);
-	stmt3.setInt(2,rowPerPage);
-	rs3 = stmt3.executeQuery();
-	
-	System.out.println(stmt3 + "<stmt3");
-
-	ArrayList<HashMap<String,Object>> list2 = new ArrayList<HashMap<String, Object>>();
-	while(rs3.next()){
-		HashMap<String,Object> na2 = new HashMap<String, Object>();
-		na2.put("category", rs3.getString("category"));
-		na2.put("goodsTitle", rs3.getString("goodsTitle"));
-		na2.put("goodsPrice", rs3.getInt("goodsPrice"));
-		list2.add(na2);
-	}
 
 %>
+
 <!-- view layer -->
 <!DOCTYPE html>
 <html>
@@ -145,52 +159,34 @@
 			}
 		%>
 	</div>
-				<table >
-					<tr>
-						<td>image</td>
-						<td>category</td>
-						<td>Title</td>
-						<td>Price</td>
-					</tr>
-					<%
-					if(category==null){
-						for(HashMap<String,Object> na2 : list2){
-					%>	
-					<tr>
-						<td>
-							<a href="/shop/emp/goodsOne.jsp">
-								<img src="/shop/emp/img/orang2.jpg" width="200px;">
-							</a>
-						</td>
-						<td><%=(String)(na2.get("category")) %>
-						<td><%=(String)(na2.get("goodsTitle"))%></td>
-						<td><%=(Integer)(na2.get("goodsPrice"))%></td>
-					</tr>
-					
+		<br>
+		<br>
+			<div class="container text-center">
+				<div class="row">
 			<%
-						}
-					}else 	{
-						for(HashMap<String,Object> na : list){
+					for(HashMap<String,Object> na : list){
 			%>	
 					
-					<tr>
-						<td>
-							<a href="/shop/emp/goodsOne.jsp">
-								<img src="/shop/emp/img/orang2.jpg" width="200px;">
+					<div class="col-4">
+						<div>
+							<a href="/shop/emp/goodsOne.jsp?goodsTitle=<%=(String)(na.get("goodsTitle"))%>">
+							<img src = "/shop/upload/<%=(String)(na.get("filename")) %> "width = 100;>
 							</a>
-						</td>
-						<td><%=(String)(na.get("category")) %>
-						<td><%=(String)(na.get("goodsTitle"))%></td>
-						<td><%=(Integer)(na.get("goodsPrice"))%></td>
-					</tr>
-				
+						</div>
+						<div><%=(String)(na.get("category")) %></div>
+						<div><%=(String)(na.get("goodsTitle"))%></div>
+						<div><%=(Integer)(na.get("goodsPrice"))%></div><br>
+					</div>
+
 			<%	
 				}
-			}
 			%>
-			</table>		
+			</div>	
+				</div>	
+			<br>
 			<nav aria-label="Page navigation example">
 			<ul class="pagination justify-content-end">
+			
 			<%
 				if(currentPage > 1) {
 			%>
@@ -211,17 +207,50 @@
 				</li>
 			<%		
 				}				
-				if(currentPage < lastPage) {
+					if(category==""){
+						if(currentPage < lastPage){
 			%>
-				<li class="page-item">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
-				</li>
-				<li class="page-item">
-					<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>">마지막페이지</a>
-				</li>
-			<%		
-				}
-			%>
+								<li class="page-item">
+									<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>">다음페이지</a>
+								</li>
+								<li class="page-item">
+									<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>">마지막페이지</a>
+								</li>
+						<%		
+							} else{
+						%>
+							<li class="page-item disabled">
+								<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
+							</li>
+							<li class="page-item disabled">
+								<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>">마지막페이지</a>
+						<%
+							}
+						%>
+				<%			
+					}else{
+						if(currentPage < cateLastPage){
+				%>
+						<li class="page-item">
+							<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
+						</li>
+						<li class="page-item">
+							<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=cateLastPage%>&category=<%=category%>">마지막페이지</a>
+						</li>
+				<%		
+					}else{
+				%>
+						<li class="page-item disabled">
+							<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
+						</li>
+						<li class="page-item disabled">
+							<a class = "page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=cateLastPage%>&category=<%=category%>">마지막페이지</a>
+				<%
+						}
+					}
+				%>
+				
+					
 			</ul>
 		</nav>		
 

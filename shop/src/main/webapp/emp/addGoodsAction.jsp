@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.util.*" %>
 <%@ page import = "java.sql.*" %>
+<%@ page import = "java.io.*" %>
+<%@ page import="java.nio.file.*" %>
 <!-- controller layer -->
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -24,13 +26,24 @@
 	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
 	int goodsAmount = Integer.parseInt(request.getParameter("goodsAmount"));
 	
+	Part part = request.getPart("goodsImg");
+	String originalName = part.getSubmittedFileName();
+	// 원본이름에서 확장자만 분리
+	int dotIdx = originalName.lastIndexOf(".");
+	String ext = originalName.substring(dotIdx); // .png
+	
+	UUID uuid = UUID.randomUUID();
+	String filename = uuid.toString().replace("-", "");
+	filename = filename + ext;
+	
+	System.out.println(filename+ "<filename");
 	System.out.println(category + "<cate");
 	System.out.println(goodsTitle+ "<title");
 	System.out.println(goodsPrice+ "<price");
 	System.out.println(goodsAmount+ "<amount");
 	System.out.println(goodsContent+ "<content");
 	
-	String sql = "INSERT INTO goods(category, emp_id, goods_title, goods_content, goods_price, goods_amount, update_date, create_date) VALUES(?,'admin',?,?,?,?,NOW(),NOW())";
+	String sql = "INSERT INTO goods(category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES(?,'admin',?,?,?,?,?,NOW(),NOW())";
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = null;
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
@@ -38,19 +51,39 @@
 	stmt = conn.prepareStatement(sql);
 	stmt.setString(1,category);
 	stmt.setString(2,goodsTitle);
-	stmt.setString(3,goodsContent);
-	stmt.setInt(4,goodsPrice);
-	stmt.setInt(5,goodsAmount);
+	stmt.setString(3,filename);
+	stmt.setString(4,goodsContent);
+	stmt.setInt(5,goodsPrice);
+	stmt.setInt(6,goodsAmount);
 	
 	System.out.println(stmt + "<stmt");
 	
+	int row = stmt.executeUpdate();
 	
+	if(row == 1){// insert 성공 -> 파일업로드
+		// part -> 1. inputStream -> 2. outputStream ->  3. 빈파일
+		//1)
+		InputStream is = part.getInputStream();
+		// 3)+2)을 먼저 (무슨 api사용하느냐에 따라 다름)
+		String filePath = request.getServletContext().getRealPath("upload");
+		File f = new File(filePath, filename); // 빈파일
+		OutputStream os = Files.newOutputStream(f.toPath()); // os + file
+		is.transferTo(os);
+		
+		os.close();
+		is.close();
+	}
+	//이미지 삭제
+	/*
+	File df = new File(filePath, rs.getString("filename"))
+	df.delete()
+	*/
 	
 	
 %>
 <!-- controller layer -->
 <%
-	int row = stmt.executeUpdate();
+	
 	if(row == 1){
 		System.out.println("입력성공");
 		response.sendRedirect("/shop/emp/goodsList.jsp");
