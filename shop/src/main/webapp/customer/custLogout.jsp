@@ -2,6 +2,6 @@
 <%
 session.invalidate(); //세션 공간을 초기화 한 것...
 
-response.sendRedirect("/shop/emp/empLoginForm.jsp"); 
+response.sendRedirect("/shop/customer/custLoginForm.jsp"); 
 
 %>

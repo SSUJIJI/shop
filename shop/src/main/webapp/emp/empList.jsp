@@ -81,8 +81,7 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<!-- css -->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+ 
 	<style>
         /* 스타일 추가 */
         body {
@@ -144,7 +143,28 @@
         }
         .custom-link:hover {
             background-color: #f0f0f0;
+		
+		}
+		.pagination .page-link {
+            color: black; /* 페이지 번호 텍스트 색상 */
         }
+
+        .pagination .page-link:hover {
+            color: #FFD9FA; /* 페이지 번호에 마우스를 올렸을 때 색상 변경 */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #FFD9FA; /* 현재 페이지 표시 링크 배경색 */
+            border-color:#FFD9FA; /* 현재 페이지 표시 링크 테두리 색상 */
+            color: white; /* 현재 페이지 텍스트 색상 */
+        }
+
+        .pagination .page-item .page-link {
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+      
     </style>
 </head>
 <body>

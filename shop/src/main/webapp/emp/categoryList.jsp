@@ -34,12 +34,71 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        td a {
+            color: black;
+            text-decoration: none;
+        }
+        td a:hover {
+        	color: #F361DC;
+            text-decoration: none;
+        }
+        .add-link {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .add-link a {
+            color: #F361DC;
+            text-decoration: none;
+        }
+        .add-link a:hover {
+            text-decoration: none;
+        }
+         th {
+            font-size: 35px; /* category 글씨 크기 조절 */
+        }
+    </style>
 </head>
 <body>
-<h1>Category</h1>
+<!-- empMenu.jsp include : 주체가 서버 vs redirect(주제:클라이언트) -->
+	<!-- 주체가 서버이기에 include할때는 절대주소가 /shop/..	.시작하지 않는다 -->
+	<jsp:include page = "/emp/inc/empMenu.jsp"></jsp:include>
+	<hr>
+  <div class="container">
 	<table>
+	
 		<tr>
-			<td>category</td>
+			<th style = "text-align: center;">category</th>
 		</tr>
 			<%
 				for(HashMap m : list){
@@ -55,8 +114,12 @@
 				}
 			%>
 	</table>
-	<div>
-		<a href="/shop/emp/addCategoryForm.jsp">추가</a>
+	
+	<div class="add-link">
+			<a href="/shop/emp/addCategoryForm.jsp" class="btn btn-outline-secondary">추가</a>
+	</div>
+	
+	
 	</div>
 </body>
 </html>
