@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
+<%@ page import = "shop.dao.*" %>
 <%
 
 	//로그인 인증분기 : 세션 변수 이름 loginEmp
@@ -11,32 +12,12 @@
  	
 %>
 <%
-
+	
 	String empName = request.getParameter("empName");
+	String empJob = request.getParameter("empJob");
 	System.out.println(empName + "<-empName");
 	
-	String sql = "select emp_id empId, grade, emp_pw empPw, emp_name empName, emp_job empJob, hire_date hireDate, active from emp where emp_name = ?";
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
-	PreparedStatement stmt = null;
-	stmt = conn.prepareStatement(sql);
-	
-	stmt.setString(1,empName);
-	ResultSet rs = null;
-	rs = stmt.executeQuery();
-	
-	ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
-	while(rs.next()){
-		HashMap<String,Object> m = new HashMap<String,Object>();
-		m.put("empId", rs.getString("empId"));
-		m.put("grade", rs.getInt("grade"));
-		m.put("empName", rs.getString("empName"));
-		m.put("empJob", rs.getString("empJob"));
-		m.put("hireDate", rs.getString("hireDate"));
-		m.put("active", rs.getString("active"));
-		list.add(m);
-	}
+	ArrayList<HashMap<String,Object>> empOne = EmpDAO.selectEmpOne(empName);
 
 %>
 
@@ -99,7 +80,7 @@
 <div class = "container">
 	<h1>고객관리</h1>
 	<%
-		for(HashMap<String,Object> m : list){
+		for(HashMap<String,Object> m : empOne){
 	%>	
 		<table class="table table-hover">
 			<tr>

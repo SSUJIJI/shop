@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
+<%@ page import = "shop.dao.*" %>
 <%
 
 	//로그인 인증분기 : 세션 변수 이름 loginEmp
@@ -12,27 +13,14 @@
 %>
 <%	
 
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
-	
-	//model layer
-	// 모델:특수한 형태의 데이터(RDBMS: mariadb) -> API사용하여 자료구조(ResultSet) 취득 -> 일반화된 자료구조(ArrayList<HashMap>)로 변경을 해야함 
-	String sql1 = "select category from category";
-	PreparedStatement stmt1 = null;
-	stmt1 = conn.prepareStatement(sql1);
-	ResultSet rs1 = null;
-	rs1 = stmt1.executeQuery(); 
-	// JDBC API 종속된 자료구조 모델 (ResultSet)-> 기본 API 자료구조 (ArrayList)로 변경
-	ArrayList<String> categoryList = new ArrayList<String>();
-	
-	//ResultSet -> ArrayList<HashMap<String, Object>>
-	while(rs1.next()){
-		categoryList.add(rs1.getString("category"));
-		}
-	
+//model layer
+// 모델:특수한 형태의 데이터(RDBMS: mariadb) -> API사용하여 자료구조(ResultSet) 취득 -> 일반화된 자료구조(ArrayList<HashMap>)로 변경을 해야함 
+// JDBC API 종속된 자료구조 모델 (ResultSet)-> 기본 API 자료구조 (ArrayList)로 변경
+//ResultSet -> ArrayList<HashMap<String, Object>>
+
+	ArrayList<String> categoryList = GoodsDAO.selectCategory();
 	System.out.println(categoryList);
-	// JDBC API 사용이 끝났다면 DB자원 반납
+// JDBC API 사용이 끝났다면 DB자원 반납
 %>
 
 <!DOCTYPE html>

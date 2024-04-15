@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
+<%@ page import = "shop.dao.*" %>
 <%
 
 	//로그인 인증분기 : 세션 변수 이름 loginEmp
@@ -21,23 +22,10 @@
 	
 	int startRow = ((currentPage-1)*rowPerPage);
 	
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
 	
 	//lastPage 모듈
-	String sql2 = "select count(*) cnt from emp";
-	PreparedStatement stmt2 = null;
-	stmt2 = conn.prepareStatement(sql2);
-	ResultSet rs2 = null;
-	rs2 = stmt2.executeQuery();
-	
-	int totalRow = 0;
+	int totalRow = EmpDAO.totalRow();
 
-	
-	if(rs2.next()){
-		totalRow = rs2.getInt("cnt");
-	}
 	
 	System.out.println(totalRow +"<total");
 	
@@ -47,12 +35,14 @@
 	}
 	System.out.println(currentPage +" <currentpage");
 	
+	
+	ArrayList<HashMap<String,Object>> empList = EmpDAO.selectEmpList(startRow, rowPerPage);
 %>
 
 <%	
 	//model layer
 	// 모델:특수한 형태의 데이터(RDBMS: mariadb) -> API사용하여 자료구조(ResultSet) 취득 -> 일반화된 자료구조(ArrayList<HashMap>)로 변경을 해야함 
-	String sql = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?,?";
+	/*String sql = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?,?";
 	PreparedStatement stmt = null;
 	stmt = conn.prepareStatement(sql);
 	ResultSet rs = null;
@@ -72,7 +62,9 @@
 		m.put("active", rs.getString("active"));
 		list.add(m);
 	}
-	// JDBC API 사용이 끝났다면 DB자원 반납
+	// JDBC API 사용이 끝났다면 DB자원 반납*/
+	
+	
 %>
 <!-- view layer : 모델(ArrayList<HashoMap<String, Object>> -->
 <!DOCTYPE html>
@@ -183,7 +175,7 @@
 		        <th>Active</th>
 		    </tr>
 		    <%
-		        for(HashMap<String,Object> m : list){
+		        for(HashMap<String,Object> m : empList){
 		    %>
 		    <tr>
 		        <td><%=(String)(m.get("empId"))%></td>

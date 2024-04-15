@@ -3,6 +3,7 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.io.*" %>
 <%@ page import="java.nio.file.*" %>
+<%@ page import = "shop.dao.*" %>
 <!-- controller layer -->
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -43,22 +44,8 @@
 	System.out.println(goodsAmount+ "<amount");
 	System.out.println(goodsContent+ "<content");
 	
-	String sql = "INSERT INTO goods(category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES(?,'admin',?,?,?,?,?,NOW(),NOW())";
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
-	PreparedStatement stmt = null;
-	stmt = conn.prepareStatement(sql);
-	stmt.setString(1,category);
-	stmt.setString(2,goodsTitle);
-	stmt.setString(3,filename);
-	stmt.setString(4,goodsContent);
-	stmt.setInt(5,goodsPrice);
-	stmt.setInt(6,goodsAmount);
 	
-	System.out.println(stmt + "<stmt");
-	
-	int row = stmt.executeUpdate();
+	int row = GoodsDAO.insertGoods(category, goodsTitle, filename, goodsContent, goodsPrice, goodsAmount);
 	
 	if(row == 1){// insert 성공 -> 파일업로드
 		// part -> 1. inputStream -> 2. outputStream ->  3. 빈파일
