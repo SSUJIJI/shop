@@ -70,7 +70,7 @@
 		<table>
 			<tr>
 				<td>login: </td>
-				<td><input type = "email" name = "email"></td>
+				<td><input type = "email" name = "mail"></td>
 			</tr>
 			<tr>
 				<td>password: </td>

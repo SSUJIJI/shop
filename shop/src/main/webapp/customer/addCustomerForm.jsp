@@ -2,11 +2,10 @@
 <%@ page import = "java.sql.*" %>
 
 
-
 <%
-	String email = request.getParameter("email");
-	if(email == null){
-	email = "";
+	String mail = request.getParameter("mail");
+	if(mail == null){
+	mail = "";
 	}
 
 	String ck = request.getParameter("ck");
@@ -89,12 +88,12 @@
 				<form method = "post" action = "/shop/customer/checkIdAction.jsp">
 					<table>	
 					<tr>
-						<td>email : <%=email %></td>
+						<td>mail : <%=mail %></td>
 						<td>ck : <%=ck %></td>
 					</tr>
 					<tr>
 					중복확인: 
-						<td><input type = "email" name = "email"></td>
+						<td><input type = "email" name = "mail"></td>
 						<td class = button-container><button type = "submit">중복확인</button></td>
 						<td><%=msg %></td>
 					</tr>
@@ -107,11 +106,11 @@
 					<%
 						if(ck.equals("T")){
 					%>
-							<td><input type = "email" name = "email" readonly = "readonly" value = "<%=email%>"></td>
+							<td><input type = "email" name = "mail" readonly = "readonly" value = "<%=mail%>"></td>
 					<%
 						}else{
 					%>		
-							<td><input type = "email" name = "email" readonly = "readonly"></td>
+							<td><input type = "email" name = "mail" readonly = "readonly"></td>
 					<%
 						}
 					%>
@@ -133,10 +132,12 @@
 					<td><input type = "radio" name = "gender" value = "여">여자</td>
 					<td><input type = "radio" name = "gender" value = "남">남자</td>
 				</tr>
+				<tr>
+					<td class="button-container">
+						<button type = "submit">가입</button>
+					</td>
+				</tr>
 			</table>
-			<div class="button-container">
-				<button type = "submit">가입</button>
-			</div>
 		</form>
 </body>
 </html>

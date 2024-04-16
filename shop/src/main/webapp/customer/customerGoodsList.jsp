@@ -140,6 +140,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
+<!-- empMenu.jsp include : 주체가 서버 vs redirect(주제:클라이언트) -->
+	<!-- 주체가 서버이기에 include할때는 절대주소가 /shop/..	.시작하지 않는다 -->
+	<jsp:include page = "/customer/inc/customerMenu.jsp"></jsp:include>
     <!-- 서브메뉴 카테고리별 상품리스트 -->
     <div class="container-fluid">
         <div class="row justify-content-end">
