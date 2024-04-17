@@ -12,7 +12,6 @@
 	String mail = request.getParameter("mail");
 	System.out.println(mail);
 	
-	String name = request.getParameter("name");
 %>
 <!DOCTYPE html>
 <html>
@@ -23,10 +22,6 @@
 <body>
 	<form method = "post" action = "/shop/customer/editPwAction.jsp">
 		<table>
-			<tr>	
-				<td>name: </td>
-				<td><input type = "text" name = name value=<%=name%> readonly = "readonly"></td>
-			</tr>
 			<tr>	
 				<td>mail: </td>
 				<td><input type = "text" name = mail value=<%=mail%> readonly = "readonly"></td>

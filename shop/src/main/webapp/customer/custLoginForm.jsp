@@ -4,7 +4,7 @@
 			
 	
 	if (session.getAttribute("loginCustomer") != null){
-		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
+		response.sendRedirect("/shop/customer/goodsList.jsp");
 		return;
 	} 
 %>

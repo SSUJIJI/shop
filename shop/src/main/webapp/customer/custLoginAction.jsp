@@ -30,7 +30,7 @@
 		
 	} else {
 		System.out.println("로그인 성공");
-		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
+		response.sendRedirect("/shop/customer/goodsList.jsp");
 		session.setAttribute("loginCustomer",loginCustomer);
 	}
 %>

@@ -11,8 +11,6 @@
 	} 
 %>
 <%
-	String name = request.getParameter("name");
-	name = URLEncoder.encode(name,"utf-8");
 	String mail = request.getParameter("mail");
 	String oldPw = request.getParameter("oldPw");
 	String newPw = request.getParameter("newPw");
@@ -24,7 +22,7 @@
 	int row = CustomerDAO.updatePw(mail, oldPw, newPw);
 
 	if(row == 1){//수정 성공
-		response.sendRedirect("/shop/customer/customerOne.jsp?name="+name);
+		response.sendRedirect("/shop/customer/customerOne.jsp?mail="+mail);
 		System.out.println("수정완료");
 	}else{
 		response.sendRedirect("/shop/customer/editPwForm.jsp");

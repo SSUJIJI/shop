@@ -6,18 +6,18 @@
 			
 	
 	if (session.getAttribute("loginCustomer") == null){
-		response.sendRedirect("/shop/customer/loginForm.jsp");
+		response.sendRedirect("/shop/customer/custLoginForm.jsp");
 		return;
 	} 
 %>
 
 <%
-	String name = request.getParameter("name");
-	System.out.println(name);
+	
 	String mail = request.getParameter("mail");
+	System.out.println(mail);
 
 	
-	ArrayList<HashMap<String, Object>> custOne = CustomerDAO.selectCustOne(name);
+	ArrayList<HashMap<String, Object>> custOne = CustomerDAO.selectCustOne(mail);
 	
 	
 %>
@@ -40,8 +40,7 @@
 			</tr>
 			<tr>
 				<td>pw: </td>
-				<td><%=(String)(m.get("pw")) %></td>
-				<td><a href = "/shop/customer/editPwForm.jsp?mail=<%=(String)(m.get("mail")) %>&name=<%=(String)(m.get("name")) %>">비밀번호 수정</a></td>
+				<td><a href = "/shop/customer/editPwForm.jsp?mail=<%=(String)(m.get("mail")) %>">비밀번호 수정</a></td>
 			</tr>
 				<tr>
 				<td>name: </td>
@@ -64,7 +63,7 @@
 				<td><%=(String)(m.get("createDate")) %></td>
 			</tr>
 			<tr>
-				<td><a href = "/shop/customer/dropCustomerAction.jsp?mail=<%=(String)(m.get("mail")) %>&pw=<%=(String)(m.get("pw"))%>">회원탈퇴</a></td>
+				<td><a href = "/shop/customer/dropCustomerAction.jsp?mail=<%=(String)(m.get("mail")) %>&pw=<%=(String)(m.get("pw"))%>&name=<%=(String)(m.get("name"))%>">회원탈퇴</a></td>
 			</tr>
 		<%
 			}

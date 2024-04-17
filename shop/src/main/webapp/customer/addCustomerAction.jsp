@@ -3,7 +3,11 @@
 <%@ page import = "java.util.*" %>
 <%@ page import = "customer.dao.*" %>
 
-
+<%
+    // 기존 로그인 세션 종료
+    session.removeAttribute("loginCustomer");
+    session.invalidate(); // 세션 무효화
+%>
 <%
 
 	String mail = request.getParameter("mail");
@@ -25,6 +29,6 @@
 		response.sendRedirect("/shop/customer/custLoginForm.jsp");
 	}else{
 		System.out.println("입력실패");
-		response.sendRedirect("/shop/customer/customerList.jsp");
+		response.sendRedirect("/shop/customer/addCustomerForm.jsp");
 	}
 %>
