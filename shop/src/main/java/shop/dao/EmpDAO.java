@@ -52,9 +52,9 @@ public class EmpDAO {
 	}
 	
 	//EmpOne을 보여주는 sql
-	public static ArrayList<HashMap<String,Object>> selectEmpOne(
+	public static HashMap<String,Object> selectEmpOne(
 			String empName) throws Exception{
-		ArrayList<HashMap<String,Object>> empOne = new ArrayList<HashMap<String,Object>>();
+		HashMap<String,Object> m = null;
 		
 		Connection conn = DBHelper.getConnection();
 		String sql = "select emp_id empId, grade, emp_pw empPw, emp_name empName, emp_job empJob, hire_date hireDate, active from emp where emp_name = ?";
@@ -63,17 +63,34 @@ public class EmpDAO {
 		ResultSet rs = stmt.executeQuery();
 		
 		while(rs.next()){
-			HashMap<String,Object> m = new HashMap<String,Object>();
+			m = new HashMap<String,Object>();
 			m.put("empId", rs.getString("empId"));
+			m.put("empPw", rs.getString("empPw"));
 			m.put("grade", rs.getInt("grade"));
 			m.put("empName", rs.getString("empName"));
 			m.put("empJob", rs.getString("empJob"));
 			m.put("hireDate", rs.getString("hireDate"));
 			m.put("active", rs.getString("active"));
-			empOne.add(m);
+			
 		}
 		conn.close();
-		return empOne;
+		return m;
+	}
+	//emp 탈퇴 sql
+	// customer/deleteEmpAction.jsp
+	// param : int(String empId, String empPw)
+	// return : int row
+	public static int deleteEmp(String empId, String empPw) throws Exception {
+		int row = 0;
+		Connection conn = DBHelper.getConnection();
+		String sql = "DELETE FROM emp WHERE emp_id = ? AND emp_pw = password(?)";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1,empId);
+		stmt.setString(2, empPw);
+		
+		row = stmt.executeUpdate();
+		conn.close();
+		return row;
 	}
 	
 	//empList를 보여주는 sql

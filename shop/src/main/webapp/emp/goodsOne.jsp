@@ -8,7 +8,7 @@
 	
 	System.out.println(goodsNo);
 	
-	ArrayList<HashMap<String,Object>> goodsOne = GoodsDAO.selectGoodsOne(goodsNo);
+	HashMap<String,Object> goodsOne = GoodsDAO.selectGoodsOne(goodsNo);
 %>
 <!DOCTYPE html>
 <html>
@@ -65,53 +65,48 @@
 <body>
 	<div class="container">
 	<h1>상세정보</h1>
-	<%
-		for(HashMap<String,Object> m : goodsOne){
-	%>	
 		<table>	
 		<tr>
 			<td>goodsNo: </td>
-			<td><%=(Integer)(m.get("goodsNo"))%></td>
+			<td><%=(Integer)(goodsOne.get("goodsNo"))%></td>
 		</tr>
 		<tr>
 			<td>Category: </td>
-			<td><%=(String)(m.get("category"))%></td>
+			<td><%=(String)(goodsOne.get("category")) %></td>
 		</tr>
 		<tr>
 			<td>Id: </td>
-			<td><%=(String)(m.get("empId"))%></td>
+			<td><%=(String)(goodsOne.get("empId"))%></td>
 		</tr>
 		<tr>
 			<td>Title: </td>
-			<td><%=(String)(m.get("goodsTitle"))%></td>
+			<td><%=(String)(goodsOne.get("goodsTitle"))%></td>
 		</tr>
 		<tr>
 			<td>Img:</td>
-			<td><img src = "/shop/upload/<%=(String)(m.get("filename"))%>" width = 100></td>
+			<td><img src = "/shop/upload/<%=(String)(goodsOne.get("filename"))%>" width = 100></td>
 		</tr>
 		<tr>	
 			<td>Content: </td>
-			<td><%=(String)(m.get("goodsContent"))%></td>
+			<td><%=(String)(goodsOne.get("goodsContent"))%></td>
 		</tr>
 		<tr>
 			<td>Price: </td>
-			<td><%=(Integer)(m.get("goodsPrice"))%></td>
+			<td><%=(Integer)(goodsOne.get("goodsPrice"))%></td>
 		</tr>
 		<tr>
 			<td>Amount: </td>
-			<td><%=(Integer)(m.get("goodsAmount"))%></td>
+			<td><%=(Integer)(goodsOne.get("goodsAmount"))%></td>
 		</tr>
 		<tr>
 			<td>Create: </td>
-			<td><%=(String)(m.get("createDate"))%></td>
+			<td><%=(String)(goodsOne.get("createDate"))%></td>
 		</tr>
 	</table>
 	<div class="delete-link">
-		<a href = "/shop/emp/deleteGoodsAction.jsp?goodsNo=<%=(Integer)(m.get("goodsNo"))%>">삭제</a>
+		<a href = "/shop/emp/deleteGoodsAction.jsp?goodsNo=<%=(Integer)(goodsOne.get("goodsNo"))%>">삭제</a>
 	</div>
-	<%
-		}
-	%>
+
 	</div>
 
 </body>

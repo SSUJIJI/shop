@@ -12,12 +12,12 @@
  	
 %>
 <%
-	
+
 	String empName = request.getParameter("empName");
 	String empJob = request.getParameter("empJob");
 	System.out.println(empName + "<-empName");
 	
-	ArrayList<HashMap<String,Object>> empOne = EmpDAO.selectEmpOne(empName);
+	HashMap<String,Object> empOne = EmpDAO.selectEmpOne(empName);
 
 %>
 
@@ -79,41 +79,35 @@
 	<jsp:include page = "/emp/inc/empMenu.jsp"></jsp:include>
 <div class = "container">
 	<h1>고객관리</h1>
-	<%
-		for(HashMap<String,Object> m : empOne){
-	%>	
 		<table class="table table-hover">
 			<tr>
 				<td>empId: </td>
-				<td><%=(String)(m.get("empId")) %></td>
+				<td><%=(String)(empOne.get("empId")) %></td>
 			</tr>
 			<tr>
 				<td>grade: </td>
-				<td><%=(Integer)(m.get("grade")) %></td>
+				<td><%=(Integer)(empOne.get("grade")) %></td>
 			</tr>
 			<tr>
 				<td>empName: </td>
-				<td><%=(String)(m.get("empName")) %></td>
+				<td><%=(String)(empOne.get("empName")) %></td>
 			</tr>
 			<tr>
 				<td>empJob: </td>
-				<td><%=(String)(m.get("empJob")) %></td>
+				<td><%=(String)(empOne.get("empJob")) %></td>
 			</tr>
 			<tr>
 				<td>hireDate: </td>
-				<td><%=(String)(m.get("hireDate")) %></td>
+				<td><%=(String)(empOne.get("hireDate")) %></td>
 			</tr>
 			<tr>
 				<td>active: </td>
-				<td><%=(String)(m.get("active")) %></td>
+				<td><%=(String)(empOne.get("active")) %></td>
 			</tr>
 		</table>
 		<div class="delete-link">
-			<a href = "/shop/emp/deleteGoodsAction.jsp?empId=<%=(String)(m.get("empId"))%>">삭제</a>
+			<a href = "/shop/emp/deleteEmpAction.jsp?empId=<%=(String)(empOne.get("empId"))%>&empPw=<%=(String)(empOne.get("empPw"))%>&name=<%=(String)(empOne.get("empName")) %>">탈퇴</a>
 		</div>
-	<%
-		}
-	%>
 	</div>
 </body>
 </html>

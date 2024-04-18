@@ -42,9 +42,9 @@ public class CategoryDAO {
 	}
 	
 	//categoryOne을 보여주는 sql
-	public static ArrayList<HashMap<String,Object>> selectCategoryOne(
+	public static HashMap<String,Object> selectCategoryOne(
 			String category) throws Exception{
-		ArrayList<HashMap<String, Object>> oneList = new ArrayList<HashMap<String,Object>>();
+		HashMap<String, Object> m = null;
 		
 		//DB접근
 		Connection conn = DBHelper.getConnection();
@@ -54,13 +54,12 @@ public class CategoryDAO {
 		ResultSet rs= stmt.executeQuery();
 		
 		if(rs.next()){
-			HashMap<String,Object> m = new HashMap<String, Object>();
+			m = new HashMap<String, Object>();
 			m.put("category", rs.getString("category"));
 			m.put("createDate",rs.getString("createDate"));
-			oneList.add(m);
 		}
 			conn.close();
-			return oneList;
+			return m;
 	}
 	
 	//category에서 지우는 sql

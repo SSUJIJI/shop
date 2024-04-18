@@ -15,7 +15,7 @@
 	String category = request.getParameter("category");
 	System.out.println(category + "<-category");
 	
-	ArrayList<HashMap<String,Object>> categoryOne = CategoryDAO.selectCategoryOne(category);
+	HashMap<String,Object> categoryOne = CategoryDAO.selectCategoryOne(category);
 	
 %>
 <!DOCTYPE html>
@@ -75,17 +75,11 @@
 			<td>createDate</td>
 		</tr>
 					<tr>
-					<%
-						for(HashMap<String,Object>m:categoryOne){
-					%>	
 						<td>
-							<%=(String)(m.get("category"))%>
+							<%=(String)(categoryOne.get("category"))%>
 						</td>	
-						<td><%=(String)(m.get("createDate")) %></td>	
+						<td><%=(String)(categoryOne.get("createDate")) %></td>	
 					</tr>	
-					<%
-						}
-					%>
 						
 	</table>
 	<div style="text-align: center; margin-top: 20px;">

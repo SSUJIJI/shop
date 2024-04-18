@@ -177,7 +177,7 @@
                         <a href="/shop/emp/goodsList.jsp" class="nav-link" style="color: black;">전체</a>
                     </li>
                     <%
-                        for(HashMap m : list){
+                        for(HashMap<String,Object> m : list){
                     %>
                             <li class="nav-item">
                                 <a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>" class="nav-link" style="color: black;">

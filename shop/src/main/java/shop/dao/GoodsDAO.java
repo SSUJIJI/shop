@@ -45,9 +45,9 @@ public class GoodsDAO {
 	}
 	
 	//상품 자세히보는 GoodsOne sql
-	public static ArrayList<HashMap<String,Object>> selectGoodsOne(int goodsNo) throws Exception{
+	public static HashMap<String,Object> selectGoodsOne(int goodsNo) throws Exception{
 		
-		ArrayList<HashMap<String,Object>> goodsOne = new ArrayList<HashMap<String,Object>>();
+		HashMap<String,Object> m = null;
 		Connection conn = DBHelper.getConnection();
 		String sql = "select goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, filename, goods_content goodsContent, goods_price goodsPrice, goods_amount goodsAmount, create_date createDate from goods where goods_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -56,7 +56,7 @@ public class GoodsDAO {
 		ResultSet rs = stmt.executeQuery();
 		
 		while(rs.next()){
-			HashMap<String,Object> m  = new HashMap<String,Object>();
+			m = new HashMap<String,Object>();
 			m.put("goodsNo",rs.getInt("goodsNo"));
 			m.put("category",rs.getString("category"));
 			m.put("empId",rs.getString("empId"));
@@ -66,10 +66,9 @@ public class GoodsDAO {
 			m.put("goodsPrice",rs.getInt("goodsPrice"));
 			m.put("goodsAmount",rs.getInt("goodsAmount"));
 			m.put("createDate",rs.getString("createDate"));
-			goodsOne.add(m);
 		}
 		conn.close();
-		return goodsOne;
+		return m;
 	}
 	//GoodsList 보여주는 sql
 		public static ArrayList<HashMap<String,Object>> selectGoodsList(

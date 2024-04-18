@@ -126,14 +126,14 @@ public class CustomerDAO {
 		}
 		
 		
-		// customerOne list 보여주기
+		// customerOne 보여주기
 		// 호출 : customerOne.jsp
 		//param : String(mail, name, birth, gender, updateDate, createDate  )
 		//return : ArrayList<HashMap<String, Object>>
-		public static ArrayList<HashMap<String, Object>> selectCustOne (
+		public static HashMap<String, Object> selectCustOne (
 				String mail) throws Exception {
-			ArrayList<HashMap<String,Object>> custOne = new ArrayList<HashMap<String,Object>>();
-		
+			HashMap<String,Object> m = null;
+			
 			Connection conn = DBHelper.getConnection();
 			String sql = "SELECT mail,pw, NAME, birth, gender, update_date updateDate, create_date createDate FROM customer WHERE mail = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -141,7 +141,7 @@ public class CustomerDAO {
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next()){
-				HashMap<String,Object> m = new HashMap<String,Object>();
+				m = new HashMap<String,Object>();
 				m.put("mail", rs.getString("mail"));
 				m.put("pw", rs.getString("pw"));
 				m.put("name", rs.getString("name"));
@@ -149,10 +149,9 @@ public class CustomerDAO {
 				m.put("gender", rs.getString("gender"));
 				m.put("updateDate", rs.getString("updateDate"));
 				m.put("createDate", rs.getString("createDate"));
-				custOne.add(m);
 			}
 			conn.close();
-			return custOne;
+			return m;
 		}
 		
 		// 비밀번호 수정

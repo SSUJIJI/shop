@@ -77,7 +77,7 @@
                         <a href="/shop/customer/goodsList.jsp" class="nav-link" style="color: black;">전체</a>
                     </li>
                     <%
-                        for(HashMap m : categoryList){
+                        for(HashMap<String,Object> m : categoryList){
                     %>
                             <li class="nav-item">
                                 <a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>" class="nav-link" style="color: black;">
@@ -100,7 +100,7 @@
             %>  
             <div class="col-4">
                 <div>
-                    <a href="/shop/emp/goodsOne.jsp?goodsNo=<%=(Integer)(m.get("goodsNo"))%>">
+                    <a href="/shop/customer/goodsOne.jsp?goodsNo=<%=(Integer)(m.get("goodsNo"))%>">
                     <img src="/shop/upload/<%=(String)(m.get("filename")) %>" width="100">
                     </a>
                 </div>

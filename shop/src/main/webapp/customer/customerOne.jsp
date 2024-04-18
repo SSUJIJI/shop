@@ -17,7 +17,7 @@
 	System.out.println(mail);
 
 	
-	ArrayList<HashMap<String, Object>> custOne = CustomerDAO.selectCustOne(mail);
+	HashMap<String, Object> custOne = CustomerDAO.selectCustOne(mail);
 	
 	
 %>
@@ -30,45 +30,38 @@
 </head>
 <body>
 	<form>
-		<table>
-		<%
-			for(HashMap<String, Object> m : custOne){
-		%>		
+		<table>	
 			<tr>
 				<td>mail: </td>
-				<td><%=(String)(m.get("mail")) %></td>
+				<td><%=(String)(custOne.get("mail")) %></td>
 			</tr>
 			<tr>
 				<td>pw: </td>
-				<td><a href = "/shop/customer/editPwForm.jsp?mail=<%=(String)(m.get("mail")) %>">비밀번호 수정</a></td>
+				<td><a href = "/shop/customer/editPwForm.jsp?mail=<%=(String)(custOne.get("mail")) %>">비밀번호 수정</a></td>
 			</tr>
 				<tr>
 				<td>name: </td>
-				<td><%=(String)(m.get("name")) %></td>
+				<td><%=(String)(custOne.get("name")) %></td>
 			</tr>
 			<tr>
 				<td>birth: </td>
-				<td><%=(String)(m.get("birth")) %></td>
+				<td><%=(String)(custOne.get("birth")) %></td>
 			</tr>
 			<tr>
 				<td>gender: </td>
-				<td><%=(String)(m.get("gender")) %></td>
+				<td><%=(String)(custOne.get("gender")) %></td>
 			</tr>
 			<tr>
 				<td>updateDate: </td>
-				<td><%=(String)(m.get("updateDate")) %></td>
+				<td><%=(String)(custOne.get("updateDate")) %></td>
 			</tr>
 			<tr>
 				<td>createDate: </td>
-				<td><%=(String)(m.get("createDate")) %></td>
+				<td><%=(String)(custOne.get("createDate")) %></td>
 			</tr>
 			<tr>
-				<td><a href = "/shop/customer/dropCustomerAction.jsp?mail=<%=(String)(m.get("mail")) %>&pw=<%=(String)(m.get("pw"))%>&name=<%=(String)(m.get("name"))%>">회원탈퇴</a></td>
+				<td><a href = "/shop/customer/dropCustomerAction.jsp?mail=<%=(String)(custOne.get("mail")) %>&pw=<%=(String)(custOne.get("pw"))%>&name=<%=(String)(custOne.get("name"))%>">회원탈퇴</a></td>
 			</tr>
-		<%
-			}
-		%>
-		
 		</table>
 	</form>
 	

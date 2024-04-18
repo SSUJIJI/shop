@@ -1,6 +1,7 @@
 package customer.dao;
 
 import java.util.*;
+import java.awt.List;
 import java.sql.*;
 
 public class GoodsDAO {
@@ -96,7 +97,7 @@ public class GoodsDAO {
 		ResultSet rs = null;
 		int totalRow = 0;
 		
-		if(category != null || category.equals("")) {
+		if(category != null && !category.equals("")) {
 			sql = "select count(*) cnt from goods where category = ? group by category";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,category);
@@ -120,12 +121,26 @@ public class GoodsDAO {
 	// param : int(goods_no)
 	// return : Goods -> HashMap
 	public static HashMap<String,Object> selectGoodsOne(int goodsNo) throws Exception{
-		HashMap<String, Object> map = null;
+		HashMap<String, Object> m = null;
 		
-		String sql = "select from goods where goods_no = ?";
+		Connection conn = DBHelper.getConnection();
+		String sql = "select goods_no goodsNo, category, goods_title goodsTitle, filename, goods_content goodsContent, goods_price goodsPrice, goods_amount goodsAmount from goods where goods_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1,goodsNo);
+		ResultSet rs = stmt.executeQuery();
 		
-		
-		return map;
+		while (rs.next()) {
+			m = new HashMap<String, Object>();
+			m.put("goodsNo", rs.getString("goodsNo"));
+			m.put("category", rs.getString("category"));
+			m.put("goodsTitle", rs.getString("goodsTitle"));
+			m.put("filename", rs.getString("filename"));
+			m.put("goodsContent", rs.getString("goodsContent"));
+			m.put("goodsPrice", rs.getInt("goodsPrice"));
+			m.put("goodsAmount", rs.getInt("goodsAmount"));
+		}
+		conn.close();
+		return m;
 	}
 	
 	// 상품 주문or취소 시 수정할 수량 
