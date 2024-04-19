@@ -83,7 +83,7 @@ public class EmpDAO {
 	public static int deleteEmp(String empId, String empPw) throws Exception {
 		int row = 0;
 		Connection conn = DBHelper.getConnection();
-		String sql = "DELETE FROM emp WHERE emp_id = ? AND emp_pw = password(?)";
+		String sql = "DELETE FROM emp WHERE emp_id = ? AND emp_pw = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,empId);
 		stmt.setString(2, empPw);

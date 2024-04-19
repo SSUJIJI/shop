@@ -2,6 +2,7 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
 <%@ page import = "shop.dao.*" %>
+<%@ page import = "java.net.*" %>
 <%
 
 	//로그인 인증분기 : 세션 변수 이름 loginEmp
@@ -106,7 +107,7 @@
 			</tr>
 		</table>
 		<div class="delete-link">
-			<a href = "/shop/emp/deleteEmpAction.jsp?empId=<%=(String)(empOne.get("empId"))%>&empPw=<%=(String)(empOne.get("empPw"))%>&name=<%=(String)(empOne.get("empName")) %>">탈퇴</a>
+			<a href = "/shop/emp/deleteEmpAction.jsp?empId=<%=(String)(empOne.get("empId"))%>&empPw=<%=(String)(empOne.get("empPw"))%>&empName=<%=(String)(empOne.get("empName")) %>">탈퇴</a>
 		</div>
 	</div>
 </body>

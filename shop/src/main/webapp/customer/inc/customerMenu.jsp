@@ -40,6 +40,7 @@
 <div class="navbar">
 	<!-- category CRUD  -->
  	<div class="welcome-message">
+ 	
           	<%
 			HashMap<String,Object> loginMember 
 				= (HashMap<String,Object>)(session.getAttribute("loginCustomer"));
@@ -50,4 +51,5 @@
           		}
       		%>
         </div>
+      	<a href = "/shop/customer/ordersCheckList.jsp">주문</a>
     </div>

@@ -43,6 +43,7 @@
 	<a href = "/shop/emp/categoryList.jsp">카테고리관리</a>
 	<a href = "/shop/emp/goodsList.jsp">상품관리</a>
 	<a href = "/shop/emp/customerList.jsp">고객관리</a>
+	<a href = "/shop/emp/ordersCheckList.jsp">주문관리</a>
  	<div class="welcome-message">
             <% 
                 HashMap<String,Object> loginMember = (HashMap<String,Object>)(session.getAttribute("loginEmp"));
