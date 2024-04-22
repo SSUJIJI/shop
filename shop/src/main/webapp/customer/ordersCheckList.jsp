@@ -10,6 +10,7 @@
 	} 
  	
 %>
+
 <%
 	String mail = request.getParameter("mail");
 	int currentPage = 1;
@@ -40,6 +41,7 @@
 <body>
 	<table>
 		<tr>
+			<td>No</td>
 			<td>mail </td>
 			<td>goodsColor </td>
 			<td>totalAmout </td>
@@ -47,26 +49,38 @@
 			<td>address </td>
 			<td>state </td>
 			<td>updateDate </td>
+			<td>Review</td>
 		</tr>
 		<%
 			for(HashMap<String,Object> m : checkOne){
 		%>
 				<tr>
+					<td><%=(Integer)(m.get("ordersNo"))%>
 					<td><%=(String)(m.get("mail"))%></td>
 					<td><%=(String)(m.get("goodsColor"))%></td>
 					<td><%=(Integer)(m.get("totalAmout"))%></td>
 					<td><%=(Integer)(m.get("totalPrice"))%></td>
 					<td><%=(String)(m.get("address"))%></td>
-					<td><%=(String)(m.get("state"))%></td>
+					<td>
+						<a href = "/shop/customer/shippingModify.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&state=<%=(String)(m.get("state"))%>
+						&mail=<%=(String)(m.get("mail"))%>">
+						<%=(String)(m.get("state"))%></a>
+					</td>
 					<td><%=(String)(m.get("updateDate"))%></td>
+					<td>
+					<%
+						if(m.get("state").equals("배송완료")){
+					%>
+							<a href = "/shop/customer/addCommentForm.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&goodsNo=<%=(Integer)(m.get("goodsNo"))%>">후기작성</a>
+					<%		
+						}
+					%>
+					</td>
 				</tr>	
 		<%	
 			}
 		%>
-		
-		
-	
-	
+
 	</table>
 </body>
 </html>

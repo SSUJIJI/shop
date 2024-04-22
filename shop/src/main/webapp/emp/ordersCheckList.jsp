@@ -18,6 +18,17 @@
 	int rowPerPage = 10;
 	
 	int startRow = ((currentPage-1)*rowPerPage);
+	
+	int totalRow = OrdersDAO.totalRow2();
+
+	
+	System.out.println(totalRow +"<total");
+	
+	int lastPage = totalRow/rowPerPage;
+	if(totalRow % rowPerPage != 0){
+		lastPage = lastPage+1;
+	}
+	System.out.println(currentPage +" <currentpage");
 	ArrayList<HashMap<String,Object>> listAll = OrdersDAO.selectOrderListAll(startRow, rowPerPage);
 %>
 
@@ -30,6 +41,35 @@
 </head>
 <body>
 	<table>
+		<tr>
+			<td>mail </td>
+			<td>goodsColor </td>
+			<td>totalAmout </td>
+			<td>totalPrice </td>
+			<td>address </td>
+			<td>state </td>
+			<td>updateDate </td>
+		</tr>
+		<%
+			for(HashMap<String,Object> m : listAll){
+		%>
+				<tr>
+					<td><%=(String)(m.get("mail"))%></td>
+					<td><%=(String)(m.get("goodsColor"))%></td>
+					<td><%=(Integer)(m.get("totalAmout"))%></td>
+					<td><%=(Integer)(m.get("totalPrice"))%></td>
+					<td><%=(String)(m.get("address"))%></td>
+					<td>
+						<a href = "/shop/emp/modifyOrdersAction.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&state=<%=(String)(m.get("state"))%>"><%=(String)(m.get("state"))%></a>
+					</td>
+					<td><%=(String)(m.get("updateDate"))%></td>
+				</tr>	
+		<%	
+			}
+		%>
+		
+		
+	
 	
 	</table>
 </body>

@@ -18,6 +18,7 @@
 	
 	
 	HashMap<String,Object> goodslist = GoodsDAO.selectGoodsOne(goodsNo);
+	ArrayList<HashMap<String,Object>> commentList = CommentDAO.selectComment(goodsNo);
 %>
 <!DOCTYPE html>
 <html>
@@ -78,5 +79,25 @@
 			</tr>
 		</table>
 	</form>
+	<h1>상품후기</h1>
+	<table>
+		<tr>
+			<td>No</td>
+			<td>score</td>
+			<td>content</td>
+		</tr>
+		<%
+			for(HashMap<String,Object> m : commentList){
+		%>		
+				<tr>
+					<td><%=goodsNo %>
+					<td><%=(Integer)(m.get("score")) %></td>
+					<td><%=(String)(m.get("content")) %></td>
+				</tr>
+		<%	
+			}
+		%>
+		
+	</table>
 </body>
 </html>

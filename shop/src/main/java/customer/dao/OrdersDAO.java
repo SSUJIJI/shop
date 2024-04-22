@@ -12,7 +12,7 @@ public class OrdersDAO {
 	public static ArrayList<HashMap<String, Object>> selectOrderListByCustomer(String mail, int startRow, int rowPerPage) throws Exception{
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
 		Connection conn = DBHelper.getConnection();
-		String sql = "SELECT o.mail mail, o.goods_color goodsColor, o.total_amount totalAmout, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
+		String sql = "SELECT o.mail mail, o.orders_no ordersNo, o.goods_color goodsColor, g.goods_no goodsNo, o.total_amount totalAmout, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
 				+ " from orders o inner join goods g"
 				+ " on o.goods_no = g.goods_no "
 				+ " WHERE o.mail = ? LIMIT ?,?";
@@ -27,6 +27,8 @@ public class OrdersDAO {
 			HashMap<String,Object> m = new HashMap<String,Object>();
 			m.put("mail", rs.getString("mail"));
 			m.put("goodsColor", rs.getString("goodsColor"));
+			m.put("goodsNo", rs.getInt("goodsNo"));
+			m.put("ordersNo", rs.getInt("ordersNo"));
 			m.put("totalAmout", rs.getInt("totalAmout"));
 			m.put("totalPrice", rs.getInt("totalPrice"));
 			m.put("address", rs.getString("o.address"));
@@ -58,32 +60,15 @@ public class OrdersDAO {
 		
 		}
 	
-	//관리자 전체주문을 확인(페이징)
-	public static ArrayList<HashMap<String, Object>> selectOrderListAll(int startRow, int rowPerPage) throws Exception{
-		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
-
-		String sql = "select o.orders_no ordersNo,"
-				+ "			 o.goods_no g.goodsNo,"
-				+ "			g.goods_title goodsTitle"
-				+ "from orders o inner join goods g"
-				+ "on o.goods_no = g.goods_no"
-				+ "where o.mail = ?"				
-				+ "order by o.orders_no desc"
-				+ "offset ? rows fetch next ? rows only";
-		
-		return list;
-		}
 	//modifyOrdersAction에서 action을 바꾸는 sql
-		public static int modifyOrders(String goodsNo, String active) throws Exception {
+		public static int modifyOrders(String goodsNo, String state) throws Exception {
 			
 			int row = 0 ;
 			Connection conn = DBHelper.getConnection();
 			String sql = "update orders set state = ? where goods_no = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			if(active.equals("결제중")){
+			if(state.equals("결제중")){
 				stmt.setString(1,"결제완료");
-			}else if(active.equals("결제완료")){
-				stmt.setString(1,"배송완료");
 			}
 			stmt.setString(2,goodsNo);
 			
@@ -123,4 +108,89 @@ public class OrdersDAO {
 		conn.close();
 		return row;
 	}
+	//관리자 전체주문을 확인(페이징)
+	public static ArrayList<HashMap<String, Object>> selectOrderListAll(int startRow, int rowPerPage) throws Exception{
+		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+		
+		String sql = "SELECT o.mail mail, o.goods_color goodsColor, g.goods_no goodsNo, o.orders_no ordersNo, o.total_amount totalAmout, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
+				+ " from orders o inner join goods g "
+				+ " on o.goods_no = g.goods_no "
+				+ "LIMIT ?,?";
+		Connection conn = DBHelper.getConnection();
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1,startRow);
+		stmt.setInt(2, rowPerPage);
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("mail", rs.getString("mail"));
+			m.put("goodsColor", rs.getString("goodsColor"));
+			m.put("ordersNo", rs.getInt("ordersNo"));
+			m.put("goodsNo", rs.getInt("goodsNo"));
+			m.put("totalAmout", rs.getInt("totalAmout"));
+			m.put("totalPrice", rs.getInt("totalPrice"));
+			m.put("address", rs.getString("address"));
+			m.put("state", rs.getString("state"));
+			m.put("updateDate", rs.getString("updateDate"));
+			list.add(m);
+		}
+		conn.close();
+		return list;
+	}
+	//modifyOrdersAction에서 '결제완료->배송중'을 바꾸는 sql
+	public static int shippingModify (String ordersNo, String state) throws Exception {
+		int row = 0;
+		String sql = "update orders set state = ? where orders_no = ?";
+		
+		Connection conn = DBHelper.getConnection();
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		if(state.equals("결제완료")){
+			stmt.setString(1,"배송중");
+		}
+		stmt.setString(2,ordersNo);
+		
+		row = stmt.executeUpdate(); 
+		
+		conn.close();
+		return row;
+	
+	}
+	
+	//ordersCheckList에서 '배송중->배송완료' and 결제완료는 못 누르게
+	public static int successModify (String ordersNo, String state) throws Exception{
+		int row = 0;
+		String sql = "update orders set state = ? where orders_no = ?";
+		Connection conn = DBHelper.getConnection();
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		if(state.equals("배송중")){
+			stmt.setString(1,"배송완료");
+		}
+		stmt.setString(2,ordersNo);
+		
+		row = stmt.executeUpdate();
+		conn.close();
+		return row;
+	
+	
+	}
+	//직원 페이지 totalRow
+		public static int totalRow2() throws Exception{
+			
+			int totalRow = 0;
+			Connection conn = DBHelper.getConnection();
+			String sql = "select count(*) cnt from orders";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()){
+				totalRow = rs.getInt("cnt");
+			}
+				
+			conn.close();
+			return totalRow;
+			
+			}
+	
 }
