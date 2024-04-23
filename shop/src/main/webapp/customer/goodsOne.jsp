@@ -10,16 +10,23 @@
 	} 
  	
 %>
-
+<%
+		HashMap<String,Object> loginMember 
+		= (HashMap<String,Object>)(session.getAttribute("loginCustomer"));
+		String mail = (String)(loginMember.get("mail"));
+%>
 <%
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 	
+
 	System.out.println(goodsNo + "<-goodsNo");
-	
+	System.out.println(mail + "<--mail");
 	
 	HashMap<String,Object> goodslist = GoodsDAO.selectGoodsOne(goodsNo);
-	ArrayList<HashMap<String,Object>> commentList = CommentDAO.selectComment(goodsNo);
+	ArrayList<HashMap<String,Object>> commentList = CommentDAO.selectComment(goodsNo, mail);
 %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +37,7 @@
 	<form method = "post" action = "/shop/customer/addOrdersAction.jsp">
 		<table>
 			<tr>
-				<td><input type="hidden" name = "goodsNo" value= "<%=(String)(goodslist.get("goodsNo")) %>"></td>
+				<td><input type="hidden" name = "goodsNo" value= "<%=(int)(goodslist.get("goodsNo")) %>"></td>
 			</tr>
 			<tr>
 				<td>category: </td>
@@ -57,7 +64,8 @@
 			</tr>
 			<tr>
 				<td>goodsAmount: </td>
-				<td><input type = "number" name = "goodsAmount"></td>
+				<td><input type = "number" name = "totalAmount"></td>
+				<td><input type="hidden" name = "goodsAmount" value= "<%=(Integer)(goodslist.get("goodsAmount")) %>"></td>
 			</tr>
 			<tr>
 				<td>goodsColor: </td>
@@ -93,6 +101,13 @@
 					<td><%=goodsNo %>
 					<td><%=(Integer)(m.get("score")) %></td>
 					<td><%=(String)(m.get("content")) %></td>
+					<%
+						if(mail.equals(m.get("mail"))){
+					%>
+							<td><a href = "/shop/customer/deleteCommentAction.jsp?ordersNo=<%=(Integer)(m.get("ordersNo")) %>&mail=<%=(String)(m.get("mail")) %>">리뷰삭제</a>
+					<%		
+						}
+					%>
 				</tr>
 		<%	
 			}

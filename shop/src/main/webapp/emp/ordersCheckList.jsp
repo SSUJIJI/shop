@@ -42,9 +42,10 @@
 <body>
 	<table>
 		<tr>
+			<td>ordersNo</td>
 			<td>mail </td>
 			<td>goodsColor </td>
-			<td>totalAmout </td>
+			<td>totalAmount </td>
 			<td>totalPrice </td>
 			<td>address </td>
 			<td>state </td>
@@ -54,13 +55,27 @@
 			for(HashMap<String,Object> m : listAll){
 		%>
 				<tr>
+					<td><%=(Integer)(m.get("ordersNo"))%></td>
 					<td><%=(String)(m.get("mail"))%></td>
 					<td><%=(String)(m.get("goodsColor"))%></td>
-					<td><%=(Integer)(m.get("totalAmout"))%></td>
+					<td><%=(Integer)(m.get("totalAmount"))%></td>
 					<td><%=(Integer)(m.get("totalPrice"))%></td>
 					<td><%=(String)(m.get("address"))%></td>
 					<td>
-						<a href = "/shop/emp/modifyOrdersAction.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&state=<%=(String)(m.get("state"))%>"><%=(String)(m.get("state"))%></a>
+					<%
+						if(m.get("state").equals("배송완료")){
+					%>
+							<%=(String)(m.get("state"))%>
+					<%	
+						}else{
+					%>
+							<a href = "/shop/emp/modifyOrdersAction.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&state=<%=(String)(m.get("state"))%>">
+							<%=(String)(m.get("state"))%></a>
+							<a href = "/shop/emp/dropOrdersAction.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&state=<%=(String)(m.get("state"))%>">
+							<%=(String)(m.get("state"))%></a>
+					<%		
+						}
+					%>
 					</td>
 					<td><%=(String)(m.get("updateDate"))%></td>
 				</tr>	
@@ -68,9 +83,6 @@
 			}
 		%>
 		
-		
-	
-	
 	</table>
 </body>
 </html>

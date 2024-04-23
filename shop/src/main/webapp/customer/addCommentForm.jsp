@@ -2,9 +2,11 @@
 <%
 	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	String mail = request.getParameter("mail");
 	
 	System.out.println(ordersNo);
 	System.out.println(goodsNo);
+	System.out.println(mail);
 %>
 <!DOCTYPE html>
 <html>
@@ -16,14 +18,15 @@
 <form method = "post" action = "/shop/customer/addCommentAction.jsp">
 	<table>
 		<tr>
+			<td>아이디</td>
 			<td>주문번호</td>
 			<td>상품번호</td>
 			<td>점수</td>
 			<td>내용</td>
 		</tr>
 		<tr>
-			
-			<td><input type = "hidden" name = "ordersNo" value = <%=ordersNo %>><%=ordersNo %></td>
+			<td><input type = "hidden" name = "mail" value ="<%=mail %>" ><%=mail %></td>
+			<td><input type = "hidden" name = "ordersNo" value = "<%=ordersNo %>"><%=ordersNo %></td>
 			<td><input type = "hidden" name = "goodsNo" value = "<%=goodsNo%>"><%=goodsNo %>
 			</td>
 		

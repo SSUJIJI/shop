@@ -5,16 +5,17 @@ import java.sql.*;
 
 public class CommentDAO {
 	//commnet 추가하는 쿼리
-	public static int insertComment(int ordersNo, int score, String content) throws Exception{
+	public static int insertComment(int ordersNo, String mail, int score, String content) throws Exception{
 		int row = 0;
-		String sql = "INSERT INTO comment(orders_no, score, content, update_date, create_date)"
-				+ "VALUES(?, ?, ?, NOW(),NOW())";
+		String sql = "INSERT INTO comment(orders_no, score, mail, content, update_date, create_date)"
+				+ "VALUES(?, ?, ?, ?, NOW(),NOW())";
 		
 		Connection conn = DBHelper.getConnection();
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, ordersNo);
 		stmt.setInt(2, score);
-		stmt.setString(3,content);
+		stmt.setString(3,mail);
+		stmt.setString(4,content);
 		row = stmt.executeUpdate();
 		
 		conn.close();
@@ -22,10 +23,10 @@ public class CommentDAO {
 	}
 	
 	//comment goodsOne.jsp에서 보여주는 쿼리
-	public static ArrayList<HashMap<String,Object>> selectComment(int goodsNo) throws Exception{
+	public static ArrayList<HashMap<String,Object>> selectComment(int goodsNo, String mail) throws Exception{
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
 		
-		String sql = "SELECT c.score, c.content"
+		String sql = "SELECT c.score, c.content, o.orders_no ordersNo, c.mail"
 				+ " FROM COMMENT c inner join orders o "
 				+ "ON c.orders_no = o.orders_no "
 				+ "WHERE o.goods_no = ?";
@@ -36,8 +37,10 @@ public class CommentDAO {
 		
 		while(rs.next()) {
 			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("ordersNo", rs.getInt("ordersNo"));
 			m.put("score", rs.getInt("score"));
 			m.put("content", rs.getString("content"));
+			m.put("mail", rs.getString("mail"));
 			list.add(m);
 		}
 		
@@ -45,10 +48,24 @@ public class CommentDAO {
 		return list;
 		
 	}
+	//emp/deleteCommentAction.jsp 
+	public static int deleteRow(int ordersNo) throws Exception{
+		int row = 0;
+		String sql = "DELETE FROM comment WHERE orders_no = ?";
+		Connection conn = DBHelper.getConnection();
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, ordersNo);
+		row = stmt.executeUpdate();
+		
+		conn.close();
+		return row;
+		
+	
+	}
 	//emp/commenCheckList에서 comment보여주는 쿼리
 	public static ArrayList<HashMap<String,Object>> checkComment() throws Exception{
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
-		String sql = "SELECT c.score, c.content, c.orders_no ordersNo"
+		String sql = "SELECT c.score, c.content, c.orders_no ordersNo, c.mail"
 				+ " FROM COMMENT c inner join orders o "
 				+ "ON c.orders_no = o.orders_no ";
 		Connection conn = DBHelper.getConnection();
@@ -60,10 +77,27 @@ public class CommentDAO {
 			m.put("ordersNo", rs.getInt("ordersNo"));
 			m.put("score", rs.getInt("score"));
 			m.put("content", rs.getString("content"));
+			m.put("mail", rs.getString("mail"));
 			list.add(m);
 		}
 		
 		return list;
 	}
-
+	//customer/deleteCommentAction.jsp
+	public static int deleteCustomerRow(int ordersNo, String mail)throws Exception{
+		int row = 0;
+		
+		Connection conn = DBHelper.getConnection();
+		String sql = "DELETE m"
+				+ " FROM comment m"
+				+ " JOIN customer c ON m.mail = c.mail"
+				+ " WHERE c.mail = ? AND m.orders_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1,mail);
+		stmt.setInt(2,ordersNo);
+		row = stmt.executeUpdate();
+		
+		conn.close();
+		return row;
+	}
 }

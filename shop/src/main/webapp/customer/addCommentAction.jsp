@@ -6,13 +6,15 @@
 	String content = request.getParameter("content");
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	String mail = request.getParameter("mail");
 	
 	System.out.println(score);
 	System.out.println(goodsNo);
 	System.out.println(ordersNo);
 	System.out.println(content);
+	System.out.println(mail);
 	
-	int row = CommentDAO.insertComment(ordersNo, score, content);
+	int row = CommentDAO.insertComment(ordersNo, mail, score, content);
 %>
 <%	
 	if(row==1){

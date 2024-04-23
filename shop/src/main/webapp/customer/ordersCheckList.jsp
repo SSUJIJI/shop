@@ -49,7 +49,7 @@
 			<td>address </td>
 			<td>state </td>
 			<td>updateDate </td>
-			<td>Review</td>
+			<td></td>
 		</tr>
 		<%
 			for(HashMap<String,Object> m : checkOne){
@@ -58,23 +58,41 @@
 					<td><%=(Integer)(m.get("ordersNo"))%>
 					<td><%=(String)(m.get("mail"))%></td>
 					<td><%=(String)(m.get("goodsColor"))%></td>
-					<td><%=(Integer)(m.get("totalAmout"))%></td>
+					<td><%=(Integer)(m.get("totalAmount"))%></td>
 					<td><%=(Integer)(m.get("totalPrice"))%></td>
 					<td><%=(String)(m.get("address"))%></td>
 					<td>
+					<%
+						if(m.get("state").equals("배송완료") || m.get("state").equals("주문취소")||m.get("state").equals("결제완료")){
+					%>
+							<%=m.get("state") %>
+					<%	
+						}else{
+					%>
 						<a href = "/shop/customer/shippingModify.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&state=<%=(String)(m.get("state"))%>
 						&mail=<%=(String)(m.get("mail"))%>">
 						<%=(String)(m.get("state"))%></a>
+					<% 
+						}
+					%>
+						
 					</td>
 					<td><%=(String)(m.get("updateDate"))%></td>
 					<td>
 					<%
 						if(m.get("state").equals("배송완료")){
 					%>
-							<a href = "/shop/customer/addCommentForm.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&goodsNo=<%=(Integer)(m.get("goodsNo"))%>">후기작성</a>
+							<a href = "/shop/customer/addCommentForm.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>&goodsNo=<%=(Integer)(m.get("goodsNo"))%>&mail=<%=(String)(m.get("mail"))%>">후기작성</a>
 					<%		
+						}else if(m.get("state").equals("결제완료")){
+					%>		
+							<a href = "/shop/customer/dropOrdersAction.jsp?
+							ordersNo=<%=(Integer)(m.get("ordersNo"))%>&goodsNo=<%=(Integer)(m.get("goodsNo"))%>
+							&totalAmount=<%=(Integer)(m.get("totalAmount"))%>&goodsAmount=<%=(Integer)(m.get("goodsAmount"))%>">주문취소</a>
+					<%
 						}
 					%>
+
 					</td>
 				</tr>	
 		<%	

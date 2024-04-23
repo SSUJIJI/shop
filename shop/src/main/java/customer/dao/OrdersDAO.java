@@ -12,7 +12,7 @@ public class OrdersDAO {
 	public static ArrayList<HashMap<String, Object>> selectOrderListByCustomer(String mail, int startRow, int rowPerPage) throws Exception{
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
 		Connection conn = DBHelper.getConnection();
-		String sql = "SELECT o.mail mail, o.orders_no ordersNo, o.goods_color goodsColor, g.goods_no goodsNo, o.total_amount totalAmout, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
+		String sql = "SELECT o.mail mail, o.orders_no ordersNo, o.goods_color goodsColor, g.goods_no goodsNo, o.total_amount totalAmount, o.total_price totalPrice, o.address, o.state, o.update_date updateDate, g.goods_amount goodsAmount"
 				+ " from orders o inner join goods g"
 				+ " on o.goods_no = g.goods_no "
 				+ " WHERE o.mail = ? LIMIT ?,?";
@@ -29,7 +29,8 @@ public class OrdersDAO {
 			m.put("goodsColor", rs.getString("goodsColor"));
 			m.put("goodsNo", rs.getInt("goodsNo"));
 			m.put("ordersNo", rs.getInt("ordersNo"));
-			m.put("totalAmout", rs.getInt("totalAmout"));
+			m.put("goodsAmount", rs.getInt("goodsAmount"));
+			m.put("totalAmount", rs.getInt("totalAmount"));
 			m.put("totalPrice", rs.getInt("totalPrice"));
 			m.put("address", rs.getString("o.address"));
 			m.put("state", rs.getString("o.state"));
@@ -86,12 +87,12 @@ public class OrdersDAO {
 			int goodsNo,
 			int goodsPrice,
 			String goodsColor,
-			int goodsAmount,
+			int totalAmount,
 			String address
 			) throws Exception{
 		
 		int row = 0;
-		int totalPrice = goodsAmount*goodsPrice;
+		int totalPrice = totalAmount*goodsPrice;
 		Connection conn = DBHelper.getConnection();
 		String sql = "INSERT INTO orders( mail, goods_no, goods_color, total_amount, total_price,address, state, create_date, update_date)"
 				+ "VALUES(?,?,?,?,?,?,'결제완료',NOW(),NOW())";
@@ -99,7 +100,7 @@ public class OrdersDAO {
 		stmt.setString(1, mail);
 		stmt.setInt(2,goodsNo);
 		stmt.setString(3, goodsColor);
-		stmt.setInt(4, goodsAmount);
+		stmt.setInt(4, totalAmount);
 		stmt.setInt(5, totalPrice);
 		stmt.setString(6, address);
 		row = stmt.executeUpdate();
@@ -108,11 +109,26 @@ public class OrdersDAO {
 		conn.close();
 		return row;
 	}
+	//고객이 자신의 주문 취소 액션 결제완료 -> 주문취소
+	//customer/dropOrdersAction.jsp
+	//
+	//return : row
+	public static int dropOrders (int ordersNo) throws Exception{
+		int row = 0;
+		Connection conn = DBHelper.getConnection();
+		String sql = "update orders set state = ? where orders_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, "주문취소");
+		stmt.setInt(2,ordersNo);
+		row = stmt.executeUpdate();
+		conn.close();
+		return row;
+	}
 	//관리자 전체주문을 확인(페이징)
 	public static ArrayList<HashMap<String, Object>> selectOrderListAll(int startRow, int rowPerPage) throws Exception{
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
 		
-		String sql = "SELECT o.mail mail, o.goods_color goodsColor, g.goods_no goodsNo, o.orders_no ordersNo, o.total_amount totalAmout, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
+		String sql = "SELECT o.mail mail, o.goods_color goodsColor, g.goods_no goodsNo, o.orders_no ordersNo, o.total_amount totalAmount, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
 				+ " from orders o inner join goods g "
 				+ " on o.goods_no = g.goods_no "
 				+ "LIMIT ?,?";
@@ -128,7 +144,7 @@ public class OrdersDAO {
 			m.put("goodsColor", rs.getString("goodsColor"));
 			m.put("ordersNo", rs.getInt("ordersNo"));
 			m.put("goodsNo", rs.getInt("goodsNo"));
-			m.put("totalAmout", rs.getInt("totalAmout"));
+			m.put("totalAmount", rs.getInt("totalAmount"));
 			m.put("totalPrice", rs.getInt("totalPrice"));
 			m.put("address", rs.getString("address"));
 			m.put("state", rs.getString("state"));

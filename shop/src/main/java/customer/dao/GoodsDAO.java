@@ -131,7 +131,7 @@ public class GoodsDAO {
 		
 		while (rs.next()) {
 			m = new HashMap<String, Object>();
-			m.put("goodsNo", rs.getString("goodsNo"));
+			m.put("goodsNo", rs.getInt("goodsNo"));
 			m.put("category", rs.getString("category"));
 			m.put("goodsTitle", rs.getString("goodsTitle"));
 			m.put("filename", rs.getString("filename"));
@@ -143,17 +143,40 @@ public class GoodsDAO {
 		return m;
 	}
 	
-	// 상품 주문or취소 시 수정할 수량 
+	// 상품 주문시 수정할 수량 
 	// /customer/addOrdersAction.jsp or dropOrderAction.jsp or 반품 ?
 	// param : int(상품번호), int(변경할 수량 + or -)
-	public static int updateGoodsAmount(int goodsNo, int goodsAmount) throws Exception {
-		
+	public static int updateGoodsAmount(int goodsNo, int goodsAmount, int totalAmount) throws Exception {
+
 		int row = 0;
-		String sql = "update goods set goods_amount = ?,update_date = sysdate "
-				+ "where goods_no = ?";
-				
 		Connection conn = DBHelper.getConnection();
+		String sql = "update goods set goods_amount = ? + -?, "
+					+ "update_date = now() "
+					+ "where goods_no = ?";
+			
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1,goodsAmount);
+		stmt.setInt(2,totalAmount);
+		stmt.setInt(3, goodsNo);
+		row = stmt.executeUpdate();
+
+		conn.close();
+		return row;
+	}
+	// 주문취소시 수정할 수량
+	//customer/dropOrdersAction.jsp
+	public static int dropsGoodsAmount(int goodsNo, int goodsAmount, int totalAmount) throws Exception{
+		int row = 0;
+		Connection conn = DBHelper.getConnection();
+		String sql = "update goods set goods_amount = ? + +?, "
+				+ "update_date = now()"
+				+ " where goods_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1,goodsAmount);
+		stmt.setInt(2,totalAmount);
+		stmt.setInt(3, goodsNo);
 		
+		row = stmt.executeUpdate();
 		conn.close();
 		return row;
 	}
