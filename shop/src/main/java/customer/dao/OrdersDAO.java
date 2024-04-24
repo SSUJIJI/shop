@@ -128,7 +128,7 @@ public class OrdersDAO {
 	public static ArrayList<HashMap<String, Object>> selectOrderListAll(int startRow, int rowPerPage) throws Exception{
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
 		
-		String sql = "SELECT o.mail mail, o.goods_color goodsColor, g.goods_no goodsNo, o.orders_no ordersNo, o.total_amount totalAmount, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
+		String sql = "SELECT o.mail mail, o.goods_color goodsColor, o.goods_no goodsNo, o.orders_no ordersNo, o.total_amount totalAmount, o.total_price totalPrice, o.address, o.state, o.update_date updateDate"
 				+ " from orders o inner join goods g "
 				+ " on o.goods_no = g.goods_no "
 				+ "LIMIT ?,?";

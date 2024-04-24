@@ -3,65 +3,34 @@
 <%@ page import = "java.util.*" %>
 <%@ page import = "shop.dao.*" %>
 <%@ page import = "java.net.*" %>
+
 <%
-
-	//로그인 인증분기 : 세션 변수 이름 loginEmp
-	if(session.getAttribute("loginEmp")== null){
-		response.sendRedirect("/shop/emp/empLoginForm.jsp");
-		return;
-	} 
- 	
-%>
-<%
-
-	String empName = request.getParameter("empName");
-	String empJob = request.getParameter("empJob");
-	System.out.println(empName + "<-empName");
-	
-	HashMap<String,Object> empOne = EmpDAO.selectEmpOne(empName);
-
+    if(session.getAttribute("loginEmp")== null){
+        response.sendRedirect("/shop/emp/empLoginForm.jsp");
+        return;
+    } 
+    
+    String empName = request.getParameter("empName");
+    String empJob = request.getParameter("empJob");
+    HashMap<String,Object> empOne = EmpDAO.selectEmpOne(empName);
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title></title>
-	  <style>
-         body {
+    <meta charset="UTF-8">
+    <title>직원 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
         }
         .container {
-            width: 80%;
-            margin: 20px auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px auto;
-        }
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
+            margin-top: 50px;
         }
         .delete-link {
             margin-top: 20px;
-            display: block;
             text-align: center;
         }
         .delete-link a {
@@ -71,44 +40,50 @@
         .delete-link a:hover {
             text-decoration: underline;
         }
-
     </style>
 </head>
 <body>
-<!-- empMenu.jsp include : 주체가 서버 vs redirect(주제:클라이언트) -->
-	<!-- 주체가 서버이기에 include할때는 절대주소가 /shop/..	.시작하지 않는다 -->
-	<jsp:include page = "/emp/inc/empMenu.jsp"></jsp:include>
-<div class = "container">
-	<h1>고객관리</h1>
-		<table class="table table-hover">
-			<tr>
-				<td>empId: </td>
-				<td><%=(String)(empOne.get("empId")) %></td>
-			</tr>
-			<tr>
-				<td>grade: </td>
-				<td><%=(Integer)(empOne.get("grade")) %></td>
-			</tr>
-			<tr>
-				<td>empName: </td>
-				<td><%=(String)(empOne.get("empName")) %></td>
-			</tr>
-			<tr>
-				<td>empJob: </td>
-				<td><%=(String)(empOne.get("empJob")) %></td>
-			</tr>
-			<tr>
-				<td>hireDate: </td>
-				<td><%=(String)(empOne.get("hireDate")) %></td>
-			</tr>
-			<tr>
-				<td>active: </td>
-				<td><%=(String)(empOne.get("active")) %></td>
-			</tr>
-		</table>
-		<div class="delete-link">
-			<a href = "/shop/emp/deleteEmpAction.jsp?empId=<%=(String)(empOne.get("empId"))%>&empPw=<%=(String)(empOne.get("empPw"))%>&empName=<%=(String)(empOne.get("empName")) %>">탈퇴</a>
-		</div>
-	</div>
+
+<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+
+<div class="container">
+    <h1 class="text-center">직원 정보</h1>
+    
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th scope="row">직원 ID</th>
+                <td><%=(String)(empOne.get("empId")) %></td>
+            </tr>
+            <tr>
+                <th scope="row">등급</th>
+                <td><%=(Integer)(empOne.get("grade")) %></td>
+            </tr>
+            <tr>
+                <th scope="row">직원명</th>
+                <td><%=(String)(empOne.get("empName")) %></td>
+            </tr>
+            <tr>
+                <th scope="row">직무</th>
+                <td><%=(String)(empOne.get("empJob")) %></td>
+            </tr>
+            <tr>
+                <th scope="row">입사일</th>
+                <td><%=(String)(empOne.get("hireDate")) %></td>
+            </tr>
+            <tr>
+                <th scope="row">활성화 상태</th>
+                <td><%=(String)(empOne.get("active")) %></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="delete-link">
+        <a class="btn btn-danger" href="/shop/emp/deleteEmpAction.jsp?empId=<%=(String)(empOne.get("empId"))%>&empPw=<%=(String)(empOne.get("empPw"))%>&empName=<%=(String)(empOne.get("empName")) %>">직원 탈퇴</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

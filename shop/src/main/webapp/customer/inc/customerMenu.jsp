@@ -44,12 +44,15 @@
           	<%
 			HashMap<String,Object> loginMember 
 				= (HashMap<String,Object>)(session.getAttribute("loginCustomer"));
-          	if (loginMember != null) {
+          	%>
+          	<%	
+          		if (loginMember != null) {
 			%>
             	<a href="/shop/customer/customerOne.jsp?mail=<%=(String)(loginMember.get("mail"))%>"><%=(String)(loginMember.get("name")) %>님</a> 반갑습니다
-      			<a href = "/shop/customer/ordersCheckList.jsp?mail=<%=(String)(loginMember.get("mail"))%>">주문</a>
       		<%
           		}
       		%>
         </div>
+        <a href = "/shop/customer/ordersCheckList.jsp?mail=<%=(String)(loginMember.get("mail"))%>">주문</a>
+        <a href = "/shop/customer/goodsList.jsp">상품보기</a>
     </div>

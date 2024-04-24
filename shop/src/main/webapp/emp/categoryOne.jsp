@@ -69,6 +69,7 @@
 </head>
 <body>
 <h1 style="text-align: center;" >Category Information</h1>
+<a href = "/shop/emp/addGoodsForm.jsp">상품추가</a>
 	  <table style="margin: 0 auto;">
 		<tr>
 			<td>category</td>

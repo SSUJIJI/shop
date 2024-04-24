@@ -14,7 +14,7 @@
 	System.out.println(content);
 	System.out.println(mail);
 	
-	int row = CommentDAO.insertComment(ordersNo, mail, score, content);
+	int row = CommentDAO.insertComment(ordersNo, mail, score, content, goodsNo);
 %>
 <%	
 	if(row==1){

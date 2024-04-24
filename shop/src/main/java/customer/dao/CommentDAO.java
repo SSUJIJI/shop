@@ -5,17 +5,18 @@ import java.sql.*;
 
 public class CommentDAO {
 	//commnet 추가하는 쿼리
-	public static int insertComment(int ordersNo, String mail, int score, String content) throws Exception{
+	public static int insertComment(int ordersNo, String mail, int score, String content, int goodsNo) throws Exception{
 		int row = 0;
-		String sql = "INSERT INTO comment(orders_no, score, mail, content, update_date, create_date)"
-				+ "VALUES(?, ?, ?, ?, NOW(),NOW())";
+		String sql = "INSERT INTO comment(orders_no, goods_no, score, mail, content, update_date, create_date)"
+				+ "VALUES(?, ?, ?, ?, ?, NOW(),NOW())";
 		
 		Connection conn = DBHelper.getConnection();
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, ordersNo);
-		stmt.setInt(2, score);
-		stmt.setString(3,mail);
-		stmt.setString(4,content);
+		stmt.setInt(2, goodsNo);
+		stmt.setInt(3, score);
+		stmt.setString(4,mail);
+		stmt.setString(5,content);
 		row = stmt.executeUpdate();
 		
 		conn.close();
@@ -99,5 +100,23 @@ public class CommentDAO {
 		
 		conn.close();
 		return row;
+	}
+	//comment 페이지 totalRow
+	public static int totalRow(int goodsNo) throws Exception {
+		
+		int totalRow = 0;
+		Connection conn = DBHelper.getConnection();
+		String sql = "select count(*) cnt from comment where goods_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, goodsNo);
+		
+		ResultSet rs = stmt.executeQuery();
+		
+		if(rs.next()){
+			totalRow = rs.getInt("cnt");
+		}
+
+		conn.close();
+		return totalRow;
 	}
 }

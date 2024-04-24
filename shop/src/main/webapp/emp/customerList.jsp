@@ -42,6 +42,38 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
+	 <style>
+        body {
+            font-family: '나눔고딕', 'Nanum Gothic', Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        jsp\\:include {
+            display: block;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 <!-- 주체가 서버이기에 include할때는 절대주소가 /shop/..	.시작하지 않는다 -->
