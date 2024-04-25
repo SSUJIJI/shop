@@ -63,6 +63,10 @@
     </style>
 </head>
 <body>
+    <!-- 메인메뉴 -->
+    <span>
+        <jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+     </span>
 	<div class="container">
 	<h1>상세정보</h1>
 		<table>	

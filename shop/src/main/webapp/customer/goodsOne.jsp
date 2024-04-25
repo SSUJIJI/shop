@@ -43,10 +43,12 @@
                 <img src="/shop/upload/<%=goodslist.get("filename")%>" alt="상품 이미지" class="product-image"  width="200">
                 <h3><%=goodslist.get("goodsTitle")%></h3>
                 <p>카테고리: <%=goodslist.get("category")%></p>
+                <p>설명: <%=goodslist.get("goodsContent") %></p>
                 <p>가격: <%=goodslist.get("goodsPrice")%>원</p>
                 <input type="hidden" name="goodsNo" value="<%=goodslist.get("goodsNo")%>">
                 <input type="hidden" name="goodsTitle" value="<%=goodslist.get("goodsTitle")%>">
                 <input type="hidden" name="goodsPrice" value="<%=goodslist.get("goodsPrice")%>">
+                <input type="hidden" name="goodsAmount" value="<%=goodslist.get("goodsAmount")%>">
             </div>
             
             <!-- 주문 정보 입력 -->

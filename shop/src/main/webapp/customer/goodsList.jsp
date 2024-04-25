@@ -44,19 +44,35 @@
     <title>goodsList</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+    	.card .card-img-top {
+		    height: 300px; /* 원하는 높이로 설정 */
+		    object-fit: cover; /* 이미지 비율 유지하면서 높이/너비 조절 */
+		}
+		.custom-btn {
+            background-color: #FFB2D9 !important; 
+            border-color: #FFB2D9 !important; 
+            color: white !important; /* 흰색 텍스트 */
+        }
+
+        .custom-btn:hover {
+            background-color: black !important;
+            border-color: black !important; 
+        }
+    </style>
 </head>
 <body>
 
 <jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include>
 
-<div class="container mt-5">
+<div class="container mt-3">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a href="/shop/customer/goodsList.jsp" class="nav-link">전체</a>
+            <a href="/shop/customer/goodsList.jsp" class="nav-link btn custom-btn">전체</a>
         </li>
         <% for(HashMap<String,Object> m : categoryList){ %>
             <li class="nav-item">
-                <a href="/shop/customer/goodsList.jsp?category=<%= m.get("category") %>" class="nav-link">
+                <a href="/shop/customer/goodsList.jsp?category=<%= m.get("category") %>" class="nav-link btn custom-btn">
                     <%= m.get("category") %> (<%= m.get("cnt") %>)
                 </a>
             </li>
@@ -65,13 +81,13 @@
     
     <div class="row mt-4">
         <% for(HashMap<String,Object> m : list){ %>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="card">
                     <img src="/shop/upload/<%= m.get("filename") %>" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title"><%= m.get("goodsTitle") %></h5>
                         <p class="card-text"><%= m.get("goodsPrice") %></p>
-                        <a href="/shop/customer/goodsOne.jsp?goodsNo=<%= m.get("goodsNo") %>" class="btn btn-primary">상세보기</a>
+                        <a href="/shop/customer/goodsOne.jsp?goodsNo=<%= m.get("goodsNo") %>" class="btn custom-btn">상세보기</a>
                     </div>
                 </div>
             </div>
@@ -82,10 +98,10 @@
         <ul class="pagination justify-content-center mt-4">
             <% if(currentPage > 1) { %>
                 <li class="page-item">
-                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=1&category=<%= category %>">처음</a>
+                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=1&category=<%=category%>">처음</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=<%= currentPage-1 %>&category=<%= category %>">이전</a>
+                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage-1 %>&category=<%=category%>">이전</a>
                 </li>
             <% } else { %>
                 <li class="page-item disabled">
@@ -98,10 +114,10 @@
             
             <% if(currentPage < lastPage){ %>
                 <li class="page-item">
-                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=<%= currentPage+1 %>&category=<%= category %>">다음</a>
+                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage+1 %>&category=<%=category%>">다음</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=<%= lastPage %>&category=<%= category %>">끝</a>
+                    <a class="page-link" href="/shop/customer/goodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">끝</a>
                 </li>
             <% } else { %>
                 <li class="page-item disabled">

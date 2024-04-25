@@ -158,6 +158,20 @@
             background-color: #fff;
             border: 1px solid #ddd;
         }
+        .card .card-img-top {
+		    height: 300px; /* 원하는 높이로 설정 */
+		    object-fit: cover; /* 이미지 비율 유지하면서 높이/너비 조절 */
+		}
+		.custom-btn {
+            background-color: #FFB2D9 !important; 
+            border-color: #FFB2D9 !important; 
+            color: white !important; /* 흰색 텍스트 */
+        }
+
+        .custom-btn:hover {
+            background-color: black !important;
+            border-color: black !important; 
+        }
     </style>
 </head>
 <body>
@@ -166,21 +180,19 @@
         <jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
     </div>
     <!-- 서브메뉴 카테고리별 상품리스트 -->
-    <div class="container-fluid">
-        <div class="row justify-content-end">
-            <div class="col-auto">
+    <div class="container mt-3">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a href="/shop/emp/addGoodsForm.jsp" class="nav-link" style="color: black;">상품등록</a>
+                        <a href="/shop/emp/addGoodsForm.jsp" class="nav-link btn custom-btn" style="color: black;">상품등록</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/shop/emp/goodsList.jsp" class="nav-link" style="color: black;">전체</a>
+                        <a href="/shop/emp/goodsList.jsp" class="nav-link btn custom-btn" style="color: black;">전체</a>
                     </li>
                     <%
                         for(HashMap<String,Object> m : list){
                     %>
                             <li class="nav-item">
-                                <a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>" class="nav-link" style="color: black;">
+                                <a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>" class="nav-link btn custom-btn" style="color: black;">
                                 <%=(String)(m.get("category"))%>
                                 (<%=(Integer)(m.get("cnt"))%>)</a>
                             </li>
@@ -188,25 +200,24 @@
                         }
                     %>
                 </ul>
-            </div>
-        </div>
-    </div>  
+  
     <br>
     <br>
-    <div class="container text-center">
+   <div class="container-fluid card-container">
         <div class="row">
             <%
                 for(HashMap<String,Object> m : goodsList){
             %>  
-            <div class="col-4">
-                <div>
-                    <a href="/shop/emp/goodsOne.jsp?goodsNo=<%=(Integer)(m.get("goodsNo"))%>">
-                    <img src="/shop/upload/<%=(String)(m.get("filename")) %>" width="100">
-                    </a>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="/shop/upload/<%=(String)(m.get("filename")) %>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><%=(String)(m.get("goodsTitle"))%></h5>
+                        <p class="card-text"><%=(String)(m.get("category")) %></p>
+                        <p class="card-text"><%=(Integer)(m.get("goodsPrice"))%></p>
+                        <a href="/shop/emp/goodsOne.jsp?goodsNo=<%=(Integer)(m.get("goodsNo"))%>" class="btn custom-btn">상세보기</a>
+                    </div>
                 </div>
-                <div><%=(String)(m.get("category")) %></div>
-                <div><%=(String)(m.get("goodsTitle"))%></div>
-                <div><%=(Integer)(m.get("goodsPrice"))%></div><br>
             </div>
             <%  
                 }
@@ -215,7 +226,18 @@
     </div>  
     <br>
     <div class="page-info-container">
-	        <%=currentPage %>/<%=lastPage %>Page
+	       
+	        <%
+	        	if(category != null && !category.equals("")){
+	        %>		 <%=currentPage %>/<%=cateLastPage %>Page
+	        <%
+	        	}else{
+	        %>		
+	       			<%=currentPage %>/<%=lastPage %>Page
+	        <%
+	        	}
+	        %>
+	        
 	</div>
         <nav aria-label="Page navigation example" style="color: #f0f0f0">
             <ul class="pagination justify-content-center">
@@ -283,5 +305,6 @@
                     %>
             </ul>
         </nav>      
+            </div>
 </body>
 </html>
