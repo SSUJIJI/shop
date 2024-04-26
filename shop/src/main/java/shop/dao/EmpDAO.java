@@ -31,17 +31,29 @@ public class EmpDAO {
 	//EMP 로그인을 구분하는 sql
 	public static HashMap<String,Object> empLogin(String empId,String empPw) throws Exception {
 		HashMap<String, Object> resultMap = null;
+		System.out.println(empId + "<---empId");
+		System.out.println(empPw + "<---empPw");
 		
 		// DB 접근
 		Connection conn = DBHelper.getConnection();
-		String sql = "select emp_id empId, emp_name empName, grade from emp where active = 'ON' and emp_id = ? and emp_pw = password(?)";
+		String sql = "select t.empId empId, t.empName empName, t.grade grade"
+				+ " from"
+				+ " (select e.emp_id empId, e.emp_name empName, e.grade, eh.empPw"
+				+ " from emp e inner join emp_history eh"
+				+ " on e.emp_id = eh.empId"
+				+ " where e.emp_id = ?"
+				+ " order by eh.createdate desc"
+				+ " LIMIT 0,1) t"
+				+ " where t.empPw = password(?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,empId);
 		stmt.setString(2,empPw);
+		System.out.println(stmt);
 		ResultSet rs = stmt.executeQuery();
 		if(rs.next()) {
 			resultMap = new HashMap<String,Object>();
 			resultMap.put("empId", rs.getString("empId"));
+			System.out.println(rs.getString("empId"));
 			resultMap.put("empName", rs.getString("empName"));
 			resultMap.put("grade", rs.getInt("grade"));
 		}

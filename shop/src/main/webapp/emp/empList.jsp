@@ -120,6 +120,7 @@
             text-decoration: underline;
             cursor: pointer;
         }
+         
 		.page-info-container {
 		            text-align: center;
 		            margin-top: 20px;

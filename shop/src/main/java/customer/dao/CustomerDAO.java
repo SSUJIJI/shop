@@ -206,7 +206,15 @@ public class CustomerDAO {
 			HashMap<String,String> map = null;
 			
 			Connection conn = DBHelper.getConnection();
-			String sql = "select mail, name from customer where mail = ? and pw =password(?)";
+			String sql = "SELECT t.mail mail, t.name name"
+					+ " from"
+					+ "    (SELECT c.mail mail, c.name name, ch.pw pw, ch.createdate createdate"
+					+ "    from customer c inner join cust_history ch"
+					+ "    ON c.mail = ch.mail"
+					+ "    WHERE c.mail = ?"
+					+ "    order by ch.createdate desc"
+					+ "    LIMIT 0,1) t"
+					+ " where t.pw = PASSWORD(?)";
 			
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, mail);

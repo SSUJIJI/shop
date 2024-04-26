@@ -17,8 +17,8 @@
 <% //1. controller
 	String empId = request.getParameter("empId");
 	String empPw = request.getParameter("empPw");
-	System.out.println(empId + "<---empId");
-	System.out.println(empPw + "<---empPw");
+	//System.out.println(empId + "<---empId");
+	//System.out.println(empPw + "<---empPw");
 	
 	//모델 호출하는 코드
 	HashMap<String,Object> loginEmp = EmpDAO.empLogin(empId,empPw);
